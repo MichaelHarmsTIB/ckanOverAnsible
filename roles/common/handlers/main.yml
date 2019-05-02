@@ -1,0 +1,12 @@
+---
+
+- name: restart jetty9
+  service:
+    name: jetty9
+    state: restarted
+
+- name:
+    command: mv /etc/solr/conf/schema.xml /etc/solr/conf/schema.xml.bak
+
+- name:
+    command: ln -s /usr/lib/ckan/default/src/ckan/ckan/config/solr/schema.xml /etc/solr/conf/schema.xml
