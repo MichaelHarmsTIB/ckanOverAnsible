@@ -1,0 +1,41 @@
+---
+- name: update
+    apt:
+      upgrade: dist
+- name: upgrade
+    apt:
+      name: "*"
+      state: latest
+# Install Python Stuff
+- name: Install python-dev, python-pip, python-virtualenv
+    apt:
+      name: "{{ packages }}"
+      vars:
+        packages:
+          - python2.7
+          - python-pip
+          - python-virtualenv
+# Install JDK
+- name: Install Java 8
+      apt:
+        name: openjdk-8-jdk
+# Install libpq
+- name: Install libpq
+      apt:
+        name: libpq-dev
+# Install Git
+- name: Install git-core
+      apt:
+        name: git-core
+# Install Database
+- name: postgresql
+      apt:
+        name: postgresql
+# Install Redis
+- name: redis-server
+      apt:
+        name: redis-server
+# Install solr-jetty or solr-tomcat
+-name: solr-jetty || solr-tomcat
+      apt:
+        name: solr-jetty
