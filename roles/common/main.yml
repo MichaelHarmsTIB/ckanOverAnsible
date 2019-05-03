@@ -1,0 +1,6 @@
+---
+
+- name: include roles
+  roles:
+    - tasks
+    - handlers

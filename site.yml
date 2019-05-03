@@ -1,4 +1,13 @@
 ---
 # file site.yml
-- import_playbook: apache2.yml
-- import_playbook: postgresql.yml
+
+- hosts: osboxes
+
+#- name: Include postgresql
+#  include: postgresql.yml
+
+  roles:
+      - common
+      - common/tasks
+      - common/handlers
+

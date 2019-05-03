@@ -1,41 +1,59 @@
 ---
-- name: update
-    apt:
-      upgrade: dist
-- name: upgrade
-    apt:
-      name: "*"
-      state: latest
+#- name: update
+#  apt: update_cache=yes
+#  become: yes
+#  become_method: sudo
 # Install Python Stuff
 - name: Install python-dev, python-pip, python-virtualenv
-    apt:
-      name: "{{ packages }}"
-      vars:
-        packages:
-          - python2.7
-          - python-pip
-          - python-virtualenv
+  become: true
+  become_user: root
+  become_method: sudo
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - python2.7
+    - python-pip
+    - python-virtualenv
 # Install JDK
-- name: Install Java 8
-      apt:
-        name: openjdk-8-jdk
+- name: Install Java 7
+  become: true
+  become_user: root
+  become_method: sudo
+  apt:
+    name: openjdk-7-jdk
 # Install libpq
 - name: Install libpq
-      apt:
-        name: libpq-dev
+  become: true
+  become_user: root
+  become_method: sudo
+  apt:
+    name: libpq-dev
 # Install Git
 - name: Install git-core
-      apt:
-        name: git-core
+  become: true
+  become_user: root
+  become_method: sudo
+  apt:
+    name: git-core
 # Install Database
 - name: postgresql
-      apt:
-        name: postgresql
+  become: true
+  become_user: root
+  become_method: sudo
+  apt:
+    name: postgresql
 # Install Redis
 - name: redis-server
-      apt:
-        name: redis-server
+  become: true
+  become_user: root
+  become_method: sudo
+  apt:
+    name: redis-server
 # Install solr-jetty or solr-tomcat
--name: solr-jetty || solr-tomcat
-      apt:
-        name: solr-jetty
+- name: solr-jetty || solr-tomcat
+  become: true
+  become_user: root
+  become_method: sudo
+  apt:
+    name: solr-jetty
