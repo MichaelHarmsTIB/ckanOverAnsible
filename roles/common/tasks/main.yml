@@ -2,9 +2,11 @@
 
 - import_tasks: installation_packages.yml
 - import_tasks: install_ckan_env.yml
-- import_tasks:
-- import_tasks:
-- import_tasks:
+- import_tasks: postgresql.yml
+- import_tasks: ckan_dev_ini.yml
+- import_tasks: jetty_config.yml
+- import_tasks: solr_config.yml
+- import_tasks: who_ini.yml
 
 
 
@@ -17,4 +19,4 @@
   become_method: sudo
   command: cd /usr/lib/ckan/default/src/ckan
   paster: db init -c /etc/ckan/default/development.ini
-    virtualenv: /usr/lib/ckan/default
+   # virtualenv: /usr/lib/ckan/default

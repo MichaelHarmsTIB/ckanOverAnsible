@@ -9,28 +9,27 @@
 #      role_attr_flags: LOGIN,NOSUPERUSER,NOCREATEDB,NOCREATEUSER
 
 # Create ckan_default and grant access to database
-- hosts: osboxes
-  tasks:
-     - name: "Create foreman PostgreSQL user"
-       become: true
-       become_user: postgres
-       become_method: su
-       postgresql_user:
-           db: ckan_default
-           name: ckan_default
-           password: ckan123
-           priv: All
-           expires: infinity
-           register: createuser
+
+- name: "Create foreman PostgreSQL user"
+  become: true
+  become_user: postgres
+  become_method: su
+  postgresql_user:
+      db: ckan_default
+      name: ckan_default
+      password: ckan123
+      priv: All
+      expires: infinity
+      register: createuser
 # Create database for ckan
-     - name: "Create db"
-       become: true
-       become_user: postgres
-       become_method: su
-       postgresql_db:
-           name: ckan_default
-           encoding: UTF-8
-           lc_collate: de_DE.UTF-8
-           lc_ctype: de_DE.UTF-8
-           owner: ckan_default
-           register: createdb
+- name: "Create db"
+  become: true
+  become_user: postgres
+  become_method: su
+  postgresql_db:
+     name: ckan_default
+     encoding: UTF-8
+     lc_collate: de_DE.UTF-8
+     lc_ctype: de_DE.UTF-8
+     owner: ckan_default
+     register: createdb

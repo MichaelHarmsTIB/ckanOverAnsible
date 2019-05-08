@@ -1,54 +1,32 @@
 ---
 
-- name: restart jetty9
-  service:
-    name: jetty9
-    state: restarted
-- name: Creates directory
-  file:
-    path: ~/ckan/lib
-    state: directory
-- name: Create sym link
-  file:
-    src: ~/ckan/lib
-    dest: /usr/lib/ckan
-    state: link
-- name: Creates ckan-etc
-  file:
-    path: ~/ckan/etc
-    state: directory
-- name: Creates ckan-etc sym link
-  file:
-    src: ~/ckan/etc
-    dest: /etc/ckan
-    state: link
-
-# Backup solr schema.xml
-#- name:
-#    command: mv /etc/solr/conf/schema.xml /etc/solr/conf/schema.xml.bak
-#    register: solrschemamv
-
-#Symlink to solr schema
-#- name:
-#    command: ln -s /usr/lib/ckan/default/src/ckan/ckan/config/solr/schema.xml /etc/solr/conf/schema.xml
-#    register: solrschemaln
-
-#Symlink to who.ini
-#- name: sym to who.ini
-#    command: ln -s /usr/lib/ckan/default/src/ckan/who.ini /etc/ckan/default/who.ini
-#    register: whoini
-
-# Create database - here maybe a better way to use !!!######
-#- name: change directory
-#    command: cd /usr/lib/ckan/default/src/ckan
-#- name: dbinit over paster
-#    command: paster db init -c /etc/ckan/default/development.ini
-#    register: dbinit
-
-- debug: msg="{{ solrschemamv.stdout_lines }}"
-
-- debug: msg="{{ solrschemaln.stdout_lines }}"
-
-- debug: msg="{{ whoini.stdout_lines }}"
-
-- debug: msg="{{ dbinit.stdout_lines }}"
+#- name: restart jetty9
+#  service:
+#    name: jetty9
+#    state: restarted
+#- name: Creates directory
+#  file:
+#    path: ~/ckan/lib
+#    state: directory
+#- name: Create sym link
+#  file:
+#    src: ~/ckan/lib
+#    dest: /usr/lib/ckan
+#    state: link
+#- name: Creates ckan-etc
+#  file:
+#    path: ~/ckan/etc
+#    state: directory
+#- name: Creates ckan-etc sym link
+#  file:
+#    src: ~/ckan/etc
+#    dest: /etc/ckan
+#    state: link
+#
+#- debug: msg="{{ solrschemamv.stdout_lines }}"
+#
+#- debug: msg="{{ solrschemaln.stdout_lines }}"
+#
+#- debug: msg="{{ whoini.stdout_lines }}"
+#
+#- debug: msg="{{ dbinit.stdout_lines }}"

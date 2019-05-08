@@ -3,9 +3,6 @@
 
 - hosts: osboxes
 
-#- name: Include postgresql
-#  include: postgresql.yml
-
   roles:
       - common
       - common/tasks
