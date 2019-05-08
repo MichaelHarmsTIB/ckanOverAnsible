@@ -1,4 +1,20 @@
 ---
 
-- import_tasks: installation.yml
+- import_tasks: installation_packages.yml
 - import_tasks: install_ckan_env.yml
+- import_tasks:
+- import_tasks:
+- import_tasks:
+
+
+
+##### Final Installation Tasks
+
+#Create Ckan data structure
+- name: ckan data structure
+  become: true
+  become_user: root
+  become_method: sudo
+  command: cd /usr/lib/ckan/default/src/ckan
+  paster: db init -c /etc/ckan/default/development.ini
+    virtualenv: /usr/lib/ckan/default

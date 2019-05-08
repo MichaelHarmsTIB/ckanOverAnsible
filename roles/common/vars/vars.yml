@@ -1,0 +1,8 @@
+---
+
+vars:
+  - db_name: ckan_default
+  - db_user: ckan_default
+  - db_password: ckan_default
+  - jetty_port
+

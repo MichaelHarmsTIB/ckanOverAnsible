@@ -1,0 +1,15 @@
+---
+
+- name: Define Jetty Port
+    lineinfile: 'dest=/etc/jetty9/start.ini regexp="jetty.port" line="jetty.port = 8983"'
+
+- name: Define Jetty host
+    lineinfile: 'dest=/etc/jetty9/start.ini regexp="jetty.host" line="jetty.host = 127.0.0.1"'
+
+- name: Define Jetty start
+    lineinfile: 'dest=/etc/jetty9/start.ini regexp="NO_START" line="NO_START = 0"'
+
+- name: Ensure database is initialised
+    command: ckan db init
+    notify:
+      - Restart Jetty9
