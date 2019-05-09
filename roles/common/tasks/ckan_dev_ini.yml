@@ -1,16 +1,34 @@
 ---
 
 - name: Define sql connection
-    lineinfile: 'dest=/etc/ckan/default/development.ini regexp="sqlalchemy.url" line="sqlalchemy.url = postgresql://ckan_default:pass@localhost/ckan_default"'
+  lineinfile:
+    dest: '/etc/ckan/default/development.ini'
+    regexp: sqlalchemy.url
+    line: 'sqlalchemy.url = postgresql://ckan_default:pass@localhost/ckan_default'
 
 - name: Define site id
-    lineinfile: 'dest=/etc/ckan/default/development.ini regexp="ckan.site_id" line="ckan.site_id = default"'
+  lineinfile:
+    dest: '/etc/ckan/default/development.ini'
+    regexp: ckan.site_id
+    line: 'line=ckan.site_id = default'
 
 - name: Define site url
-    lineinfile: 'dest=/etc/ckan/default/development.ini regexp="ckan.site_url" line="ckan.site_url = http://localhost"'
+  lineinfile:
+    dest: '/etc/ckan/default/development.ini'
+    regexp: ckan.site_url
+    line: 'ckan.site_url = http://localhost'
 
 - name: Define solr url
-    lineinfile: 'dest=/etc/ckan/default/development.ini regexp="solr_url" line="solr_url = http://localhost:8983/solr/ckan"'
+  lineinfile:
+    dest: '/etc/ckan/default/development.ini'
+    regexp: solr_url
+    line: 'solr_url = http://localhost:8983/solr/ckan'
 
 - name: Define Storage path
-    lineinfile: 'dest=/etc/ckan/default/development.ini regexp="ckan.storage_path" line="ckan.storage_path = /var/lib/ckan/default"'
+  lineinfile:
+    dest: '/etc/ckan/default/development.ini'
+    regexp: ckan.storage_path
+    line: 'ckan.storage_path = /var/lib/ckan/default'
+
+- name: Create system user for CKAN dbs
+  user: name={{ ckan_system_user }} comment="CKAN system user" system=yes

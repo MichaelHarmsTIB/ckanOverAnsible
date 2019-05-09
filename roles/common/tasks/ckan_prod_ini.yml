@@ -14,3 +14,6 @@
 
 - name: Define Storage path
     lineinfile: 'dest=/etc/ckan/default/production.ini regexp="ckan.storage_path" line="ckan.storage_path = /var/lib/ckan/default"'
+
+- name: Create system user for CKAN dbs
+  user: name={{ ckan_system_user }} comment="CKAN system user" system=yes

@@ -1,0 +1,29 @@
+---
+
+- name: Define Jetty Port
+  lineinfile:
+    dest: '/etc/jetty9/start.ini'
+    regexp: jetty.port
+    line: 'jetty.port = 8983'
+
+- name: Define Jetty host
+  lineinfile:
+    dest: 'dest=/etc/jetty9/start.ini'
+    regexp: jetty.host
+    line: 'jetty.host = 127.0.0.1'
+
+- name: Define Jetty start
+  lineinfile:
+    dest: '/etc/jetty9/start.ini'
+    regexp: NO_START
+    line: 'NO_START = 0'
+
+- name: Ensure database is initialised
+  command: ckan db init
+  notify: Restart Jetty9
+
+- name:  solr schema
+  command: mv /etc/solr/conf/schema.xml /etc/solr/conf/schema.xml.bak
+- name: solr schema copy
+  command: ln -s /usr/lib/ckan/default/src/ckan/ckan/config/solr/schema.xml /etc/solr/conf/schema.xml
+  notify: Restart Jetty9
