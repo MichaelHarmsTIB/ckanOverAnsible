@@ -1,4 +1,12 @@
 ---
+
+- name: Check whether CKAN is installed
+  stat: path={{ ckan_install_path }}/src/ckan
+  register: p
+- name: Check whether there is a virtualenv already
+  stat: path={{ ckan_install_path }}/bin/activate
+  register: venv
+
 #Install setuptools for ckan
 - name: Setuptools
   become: true
@@ -8,17 +16,84 @@
     name: setuptools==36.1
     virtualenv: /usr/lib/ckan/default/
     virtualenv_site_packages: no
+  when: not venv.stat.exists
 
-#Install ckan - hint: you can also change the version of ckan in this string
-- name: Install ckan
+- name: Create directory for ckan config files
   become: true
   become_user: root
   become_method: sudo
-  pip:
-    name: git+https://github.com/ckan/ckan.git@ckan-2.8.2#egg=ckan
-    virtualenv: /usr/lib/ckan/default/
+  file: 'path={{ ckan_conf_path }} owner={{ ckan_system_user }} state=directory'
 
-- name: requirements
-  pip:
-    requirements: /usr/lib/ckan/default/src/ckan/requirements.txt
-    virtualenv: /usr/lib/ckan/default/
+- name: Make secondary directory to link confs into
+  become: true
+  become_user: root
+  become_method: sudo
+  file: 'path=/etc/ckan/ state=directory owner={{ ckan_system_user }}'
+
+- name: Make lib directory in ckan base
+  become: true
+  become_user: root
+  become_method: sudo
+  file: 'path={{ ckan_install_base_path }}/lib/default state=directory owner={{ ckan_system_user }}'
+
+- name: Link conf directory to /etc/ckan
+  become: true
+  become_user: root
+  become_method: sudo
+  file: 'src={{ ckan_conf_path }} dest=/etc/ckan/default state=link'
+
+- name: Make secondary directory to link installation into
+  become: true
+  become_user: root
+  become_method: sudo
+  file: 'path=/usr/lib/ckan state=directory owner=ckan'
+
+#- name: Link lib directory to /usr/lib/ckan
+#  become: true
+#  become_user: root
+#  become_method: sudo
+#  file: 'src={{ ckan_install_path }} dest=/usr/lib/ckan/default state=link'
+
+- name: Install CKAN from source using PIP
+  become: true
+  become_user: root
+  become_method: sudo
+  pip: chdir={{ ckan_install_path }}
+       name={{ ckan_repository_address }}
+       virtualenv={{ ckan_install_path }}
+  when: not p.stat.exists
+
+- name: Install requirements
+  # pip processing does not read the encoding header in Python files, thus
+  # causing a failure if there are non-ASCII characters in setup.py, workaround
+  # this by setting locale
+  environment:
+    LC_CTYPE: C.UTF-8
+  pip: requirements={{ ckan_install_path }}/src/ckan/requirements.txt
+       virtualenv={{ ckan_install_path }}
+       state=latest
+
+
+##Install setuptools for ckan
+#- name: Setuptools
+#  become: true
+#  become_user: root
+#  become_method: sudo
+#  pip:
+#    name: setuptools==36.1
+#    virtualenv: /usr/lib/ckan/default/
+#    virtualenv_site_packages: no
+
+#Install ckan - hint: you can also change the version of ckan in this string
+#- name: Install ckan
+#  become: true
+#  become_user: root
+#  become_method: sudo
+#  pip:
+#    name: git+https://github.com/ckan/ckan.git@ckan-2.8.2#egg=ckan
+#    virtualenv: /usr/lib/ckan/default/
+#
+#- name: requirements
+#  pip:
+#    requirements: /usr/lib/ckan/default/src/ckan/requirements.txt
+#    virtualenv: /usr/lib/ckan/default/
