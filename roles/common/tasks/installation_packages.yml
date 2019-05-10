@@ -26,6 +26,8 @@
     - python2.7
     - python-pip
     - python-virtualenv
+    - python-psycopg2
+    - libpq-dev
 
 - name: Install openjdk-8-jdk
   become: true
@@ -34,13 +36,6 @@
   apt:
     name: openjdk-8-jdk
 
-# Install libpq
-- name: Install libpq
-  become: true
-  become_user: root
-  become_method: sudo
-  apt:
-    name: libpq5
 # Install Git
 - name: Install git-core
   become: true

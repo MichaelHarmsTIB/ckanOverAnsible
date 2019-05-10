@@ -58,20 +58,27 @@
   become: true
   become_user: root
   become_method: sudo
-  pip: chdir={{ ckan_install_path }}
-       name={{ ckan_repository_address }}
-       virtualenv={{ ckan_install_path }}
+  pip:
+    chdir: '{{ ckan_install_path }}'
+    name: '{{ ckan_repository_address }}'
+    virtualenv: '{{ ckan_install_path }}'
+    editable: 'yes'
   when: not p.stat.exists
 
 - name: Install requirements
+  become: true
+  become_user: root
+  become_method: sudo
   # pip processing does not read the encoding header in Python files, thus
   # causing a failure if there are non-ASCII characters in setup.py, workaround
   # this by setting locale
   environment:
     LC_CTYPE: C.UTF-8
-  pip: requirements={{ ckan_install_path }}/src/ckan/requirements.txt
-       virtualenv={{ ckan_install_path }}
-       state=latest
+  pip:
+    virtualenv: '{{ ckan_install_path }}'
+    chdir: '{{ ckan_install_path }}'
+    requirements: '{{ ckan_install_path }}/src/ckan/requirements.txt'
+    state: latest
 
 
 ##Install setuptools for ckan
