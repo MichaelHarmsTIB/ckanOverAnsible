@@ -30,3 +30,16 @@
 #- debug: msg="{{ whoini.stdout_lines }}"
 #
 #- debug: msg="{{ dbinit.stdout_lines }}"
+
+handlers:
+    - name: Restart Apache
+      service: name=apache2 state=restarted
+
+    - name: Restart Nginx
+      service: name=nginx state=restarted
+
+    - name: Start Jetty
+      service: name=jetty state=started
+
+    - name: Restart Jetty
+      service: name=jetty state=restarted

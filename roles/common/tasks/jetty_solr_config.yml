@@ -31,7 +31,10 @@
   become: yes
   become_user: root
   become_method: sudo
-  command: paster db init -c /home/ckan/ckan/etc/default/development.ini
+  command: "{{ item }}"
+  with_items:
+    . /usr/lib/ckan/default/bin/activate
+    paster db init -c /{{ ckan_system_user }}/ckan/etc/default/development.ini
   args:
     chdir: /home/ckan/ckan/lib/default/src/ckan
 #  notify: Restart Jetty9
@@ -47,4 +50,3 @@
   become_user: root
   become_method: sudo
   command: ln -s /usr/lib/ckan/default/src/ckan/ckan/config/solr/schema.xml /etc/solr/conf/schema.xml
-  notify: Restart Jetty9
