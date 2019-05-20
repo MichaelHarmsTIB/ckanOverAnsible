@@ -1,31 +1,16 @@
 ---
 
-# Create ckan_default and grant access to database
 
-- name: "Create foreman PostgreSQL user"
-  become: true
+- name: Create postgres user
+  become: yes
   become_user: postgres
-  become_method: su
-  command: postgres createuser -S -D -R -P ckan_default
+  postgresql_user:
+    name: "ckan_default"
+    password: "ckan123"
 
-
-#  postgresql_user:
-#      db: ckan_default
-#      name: ckan_default
-#      password: ckan123
-#      priv: All
-#      expires: infinity
-
-# Create database for ckan
-- name: "Create db"
-  become: true
+- name: create ckan db
+  become: yes
   become_user: postgres
-  become_method: su
-  command: postgres createdb -O ckan_default ckan_default -E utf-8
-
-#  postgresql_db:
-#     name: ckan_default
-#     encoding: UTF-8
-#     lc_collate: de_DE.UTF-8
-#     lc_ctype: de_DE.UTF-8
-#     owner: ckan_default
+  postgresql_db:
+    name: ckan_default
+    encoding: UTF-8

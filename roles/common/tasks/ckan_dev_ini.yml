@@ -1,34 +1,65 @@
 ---
 
+#- name: create development.ini
+#  command: paster make-config ckan /etc/ckan/default/development.ini
+#  virtualenv: '{{ ckan_install_path }}'
+
+- name: copy dev.ini
+  become: yes
+  become_user: root
+  become_method: sudo
+  copy:
+    remote_src: no
+    src: '../files/default/development.ini'
+    dest: /etc/ckan/default/
+
 - name: Define sql connection
+  become: yes
+  become_user: root
+  become_method: sudo
   lineinfile:
-    dest: '/etc/ckan/default/development.ini'
+    dest: '/home/ckan/ckan/etc/default/development.ini'
     regexp: sqlalchemy.url
-    line: 'sqlalchemy.url = postgresql://ckan_default:pass@localhost/ckan_default'
+    line: 'sqlalchemy.url = postgresql://ckan_default:ckan123@localhost/ckan_default'
 
 - name: Define site id
+  become: yes
+  become_user: root
+  become_method: sudo
   lineinfile:
     dest: '/etc/ckan/default/development.ini'
     regexp: ckan.site_id
     line: 'line=ckan.site_id = default'
 
 - name: Define site url
+  become: yes
+  become_user: root
+  become_method: sudo
   lineinfile:
     dest: '/etc/ckan/default/development.ini'
     regexp: ckan.site_url
     line: 'ckan.site_url = http://localhost'
 
 - name: Define solr url
+  become: yes
+  become_user: root
+  become_method: sudo
   lineinfile:
     dest: '/etc/ckan/default/development.ini'
     regexp: solr_url
     line: 'solr_url = http://localhost:8983/solr/ckan'
 
 - name: Define Storage path
+  become: yes
+  become_user: root
+  become_method: sudo
   lineinfile:
     dest: '/etc/ckan/default/development.ini'
     regexp: ckan.storage_path
     line: 'ckan.storage_path = /var/lib/ckan/default'
 
 - name: Create system user for CKAN dbs
+  become: yes
+  become_user: root
+  become_method: sudo
   user: name={{ ckan_system_user }} comment="CKAN system user" system=yes

@@ -27,6 +27,7 @@
     - python-pip
     - python-virtualenv
     - python-psycopg2
+    - python-pastescript
     - libpq-dev
 
 - name: Install openjdk-8-jdk

@@ -1,29 +1,50 @@
 ---
 
 - name: Define Jetty Port
+  become: yes
+  become_user: root
+  become_method: sudo
   lineinfile:
     dest: '/etc/jetty9/start.ini'
     regexp: jetty.port
     line: 'jetty.port = 8983'
 
 - name: Define Jetty host
+  become: yes
+  become_user: root
+  become_method: sudo
   lineinfile:
-    dest: 'dest=/etc/jetty9/start.ini'
+    dest: '/etc/jetty9/start.ini'
     regexp: jetty.host
     line: 'jetty.host = 127.0.0.1'
 
 - name: Define Jetty start
+  become: yes
+  become_user: root
+  become_method: sudo
   lineinfile:
     dest: '/etc/jetty9/start.ini'
     regexp: NO_START
     line: 'NO_START = 0'
 
 - name: Ensure database is initialised
-  command: ckan db init
-  notify: Restart Jetty9
+  become: yes
+  become_user: root
+  become_method: sudo
+  command: paster db init -c /home/ckan/ckan/etc/default/development.ini
+  args:
+    chdir: /home/ckan/ckan/lib/default/src/ckan
+#  notify: Restart Jetty9
 
-- name:  solr schema
+- name: solr schema
+  become: yes
+  become_user: root
+  become_method: sudo
   command: mv /etc/solr/conf/schema.xml /etc/solr/conf/schema.xml.bak
+
 - name: solr schema copy
+  become: yes
+  become_user: root
+  become_method: sudo
   command: ln -s /usr/lib/ckan/default/src/ckan/ckan/config/solr/schema.xml /etc/solr/conf/schema.xml
   notify: Restart Jetty9
