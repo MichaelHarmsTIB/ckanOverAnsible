@@ -27,18 +27,6 @@
     regexp: NO_START
     line: 'NO_START = 0'
 
-- name: Ensure database is initialised
-  become: yes
-  become_user: root
-  become_method: sudo
-  command: "{{ item }}"
-  with_items:
-    . /usr/lib/ckan/default/bin/activate
-    paster db init -c /{{ ckan_system_user }}/ckan/etc/default/development.ini
-  args:
-    chdir: /home/ckan/ckan/lib/default/src/ckan
-#  notify: Restart Jetty9
-
 - name: solr schema
   become: yes
   become_user: root

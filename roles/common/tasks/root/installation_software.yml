@@ -1,7 +1,7 @@
 ---
 
 ##### Some Tasks deactivated - depending on apt-repository
-
+## Need long time to update
 #- name: Update apt
 #  apt: update_cache=yes
 #  become: true
@@ -27,16 +27,13 @@
     - python-pip
     - python-virtualenv
     - python-psycopg2
-    - python-pastescript
     - libpq-dev
-
 - name: Install openjdk-8-jdk
   become: true
   become_user: root
   become_method: sudo
   apt:
     name: openjdk-8-jdk
-
 # Install Git
 - name: Install git-core
   become: true

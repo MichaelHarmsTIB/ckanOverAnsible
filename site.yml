@@ -6,5 +6,5 @@
   roles:
       - common
       - common/tasks
-      - common/handlers
+      - handlers
 

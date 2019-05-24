@@ -4,5 +4,7 @@ vars:
   - db_name: ckan_default
   - db_user: ckan_default
   - db_password: ckan_default
-  - jetty_port
+  - jetty_port: 8983
+  - root_dir: root
+  - non_root_dir: non-root
 

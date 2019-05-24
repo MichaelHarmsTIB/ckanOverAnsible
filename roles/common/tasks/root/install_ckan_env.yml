@@ -1,12 +1,5 @@
 ---
 
-- name: Check whether CKAN is installed
-  stat: path={{ ckan_install_path }}/src/ckan
-  register: p
-- name: Check whether there is a virtualenv already
-  stat: path={{ ckan_install_path }}/bin/activate
-  register: venv
-
 #Install setuptools for ckan
 - name: Setuptools
   become: true
@@ -15,9 +8,7 @@
   pip:
     name:
       - setuptools==36.1
-#      - flask_sqlalchemy
-#      - sqlalchemy
-    virtualenv: /usr/lib/ckan/default/
+    virtualenv: '{{ ckan_install_path }}'
     virtualenv_site_packages: no
   when: not venv.stat.exists
 
@@ -65,16 +56,9 @@
 - name: Install requirements
   become: true
   become_user: root
-  become_method: sudo
-  # pip processing does not read the encoding header in Python files, thus
-  # causing a failure if there are non-ASCII characters in setup.py, workaround
-  # this by setting locale
-  environment:
-    LC_CTYPE: C.UTF-8
   pip:
     virtualenv: '{{ ckan_install_path }}'
     chdir: '{{ ckan_install_path }}'
     requirements: '{{ ckan_install_path }}/src/ckan/requirements.txt'
-    state: latest
 
 

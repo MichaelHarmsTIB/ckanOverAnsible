@@ -1,3 +1,3 @@
 # ckanOverAnsible
-Blueprint of ansible to deploy ckan
+Blueprint of ansible to deploy ckan on debian stretch
 
