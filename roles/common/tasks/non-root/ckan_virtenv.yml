@@ -1,24 +1,21 @@
 ---
 
-- name: Run CKAN installation script
-  become_user: ckan
-  shell: |
-    virtualenv --no-site-packages default
-    . default/bin/activate
-    pip install --upgrade pip
-    pip install -U setuptools
-    pip install --ignore-installed -e git+https://github.com/okfn/ckan.git@ckan-2.8.2#egg=ckan
-    pip install --ignore-installed -r default/src/ckan/pip-requirements-docs.txt
-    exit
-  args:
-    chdir: /usr/lib/ckan
-    creates: /usr/lib/ckan/default/src/ckan/ckan/config/solr/schema.xml
-  register: ckan_installed
+#- name: Run CKAN installation script
+#  become_user: ckan
+#  shell: |
+#    virtualenv --no-site-packages default
+#    . default/bin/activate
+#    pip install --upgrade pip
+#    pip install -U setuptools
+#    pip install --ignore-installed -r default/src/ckan/pip-requirements-docs.txt
+#    exit
+#  args:
+#    chdir: /usr/lib/ckan
+#    creates: /usr/lib/ckan/default/src/ckan/ckan/config/solr/schema.xml
+#  register: ckan_installed
 
 - name: Check whether CKAN is installed
   stat: path={{ ckan_install_path }}/src/ckan
-  register: p
 
 - name: Check whether there is a virtualenv already
   stat: path={{ ckan_install_path }}/bin/activate
-  register: venv

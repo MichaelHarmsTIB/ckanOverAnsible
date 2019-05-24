@@ -10,7 +10,6 @@
       - setuptools==36.1
     virtualenv: '{{ ckan_install_path }}'
     virtualenv_site_packages: no
-  when: not venv.stat.exists
 
 - name: Create directory for ckan config files
   become: true
@@ -51,7 +50,6 @@
     name: '{{ ckan_repository_address }}'
     virtualenv: '{{ ckan_install_path }}'
     editable: 'yes'
-  when: not p.stat.exists
 
 - name: Install requirements
   become: true

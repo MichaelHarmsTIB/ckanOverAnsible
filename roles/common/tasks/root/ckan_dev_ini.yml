@@ -10,7 +10,7 @@
   become_method: sudo
   copy:
     remote_src: no
-    src: '../files/default/development.ini'
+    src: '../../templates/default/ckan/development.ini'
     dest: /etc/ckan/default/
 
 - name: Define sql connection
