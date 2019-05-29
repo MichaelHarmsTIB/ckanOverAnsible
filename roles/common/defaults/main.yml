@@ -1,9 +1,10 @@
 ---
-
+### In Production Passwords and User should be change
 db_name: ckan_default
 db_user: ckan_default
 db_password: ckan123
 ckan_system_user: ckan
+ckan_admin_password: cK0!422
 ckan_repository_address: 'git+https://github.com/ckan/ckan.git@ckan-2.8.2#egg=ckan'
 ckan_install_base_path: '/home/{{ ckan_system_user }}/ckan'
 ckan_install_path: '{{ ckan_install_base_path }}/lib/default'

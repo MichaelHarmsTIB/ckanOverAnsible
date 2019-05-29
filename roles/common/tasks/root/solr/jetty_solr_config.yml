@@ -27,14 +27,3 @@
     regexp: NO_START
     line: 'NO_START = 0'
 
-- name: solr schema
-  become: yes
-  become_user: root
-  become_method: sudo
-  command: mv /etc/solr/conf/schema.xml /etc/solr/conf/schema.xml.bak
-
-- name: solr schema copy
-  become: yes
-  become_user: root
-  become_method: sudo
-  command: ln -s /usr/lib/ckan/default/src/ckan/ckan/config/solr/schema.xml /etc/solr/conf/schema.xml

@@ -29,3 +29,20 @@
     name: "ckan_default"
     password: "{{ db_password }}"
     priv: ALL
+#
+#- name: Allow Apache to connect to Postgresql
+#  seboolean:
+#    name: httpd_can_network_connect_db
+#    state: yes
+#    persistent: yes
+#- name: Allow Apache to connect to Redis and SOLR
+#  seboolean:
+#    name: httpd_can_network_connect
+#    state: yes
+#    persistent: yes
+#- name: Allow Apache to listen on port 8983 for Solr
+#  seport:
+#    ports: 8888
+#    proto: tcp
+#    setype: http_port_t
+#    state: present

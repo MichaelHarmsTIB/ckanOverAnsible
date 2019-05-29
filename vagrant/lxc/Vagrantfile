@@ -1,0 +1,4 @@
+config.vm.networks[0][1][:lxc__bridge_name] = 'vlxcbr1'
+config.vm.provider :lxc do |lxc|
+  lxc.customize 'cgroup.memory.limit_in_bytes', "#{vconfig['vagrant_memory']}M"
+end

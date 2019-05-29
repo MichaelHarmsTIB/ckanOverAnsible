@@ -1,7 +1,0 @@
----
-
-#- name:  Symlink who ini
-#  become: true
-#  become_user: root
-#  become_method: sudo
-#  command: ln -s /usr/lib/ckan/default/src/ckan/who.ini /etc/ckan/default/who.ini
