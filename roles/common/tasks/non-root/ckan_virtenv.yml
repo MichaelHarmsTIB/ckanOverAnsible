@@ -1,7 +1,0 @@
----
-
-- name: Check whether CKAN is installed
-  stat: path={{ ckan_install_path }}/src/ckan
-
-- name: Check whether there is a virtualenv already
-  stat: path={{ ckan_install_path }}/bin/activate

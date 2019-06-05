@@ -7,7 +7,7 @@ handlers:
        state: restarted
    - name: Restart Nginx
      service:
-       name: nginx s
+       name: nginx
        state: restarted
    - name: Start Jetty
      service:

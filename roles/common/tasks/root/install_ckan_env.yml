@@ -46,6 +46,12 @@
     chdir: /usr/lib/ckan
     creates: /usr/lib/ckan/default/src/ckan/ckan/config/solr/schema.xml
 
+- name: Check whether CKAN is installed
+  stat: path={{ ckan_install_path }}/src/ckan
+
+- name: Check whether there is a virtualenv already
+  stat: path={{ ckan_install_path }}/bin/activate
+
 - name: Ensure CKAN config is present
   become: true
   become_user: root
@@ -54,24 +60,6 @@
     src: ../../templates/default/ckan/development.ini
     dest: /etc/ckan/default/development.ini
   when: not ansible_check_mode
-
-- name: solr schema
-  become: yes
-  become_user: root
-  become_method: sudo
-  command: mv /etc/solr/conf/schema.xml /etc/solr/conf/schema.xml.bak
-
-- name: solr schema copy
-  become: yes
-  become_user: root
-  become_method: sudo
-  command: ln -s /usr/lib/ckan/default/src/ckan/ckan/config/solr/schema.xml /etc/solr/conf/schema.xml
-
-#- name: solr jetty xml copy
-#  become: yes
-#  become_user: root
-#  become_method: sudo
-#  command: ln -s /etc/solr/solr-jetty.xml /var/lib/jetty9/webapps/solr.xml
 
 - name: Ensure CKAN who.ini is symlinked
   become_user: root
@@ -82,32 +70,11 @@
     dest: /etc/ckan/default/who.ini
     state: link
 
-
-- name: Initialize CKAN database
-  become_user: root
-  become: yes
-  shell: |
-    . /usr/lib/ckan/default/bin/activate
-    cd /usr/lib/ckan/default/src/ckan
-    paster db init -c /etc/ckan/default/development.ini
-    exit
-
-- name: Check if CKAN admin user exists
-  become_user: ckan
-  become: yes
-  shell: |
-    . /usr/lib/ckan/default/bin/activate
-    cd /usr/lib/ckan/default/src/ckan
-    paster --plugin=ckan user list -c /etc/ckan/default/development.ini
-    exit
-  changed_when: False
-  register: ckan_admin_user
-  notify: Restart Solr
-
 - name: Ensure WSGI specification for CKAN is present
   become_user: root
   become: yes
   template:
-    src: ../templates/default/apache2/apache.wsgi.j2
+    src: ../templates/default/apache2/apache.wsgi
     dest: /etc/ckan/default/apache.wsgi
-  notify: Restart Apache
+
+
