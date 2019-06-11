@@ -39,12 +39,19 @@
   tags: root
 - import_tasks: non-root/ckan_postgres.yml
   tags: non-root
-- import_tasks:  root/ckan_dev_ini.yml
+- import_tasks: root/ckan_dev_ini.yml
   tags: root
-- import_tasks:  root/install_ckan_env.yml
+- import_tasks: root/install_ckan_env.yml
   tags: root
 - import_tasks: root/solr/jetty_solr_config.yml
   tags: root
+
+
+#### Deploy Tasks
+- import_tasks: root/post_install_config.yml
+  tags: root
+
+
 
 
 

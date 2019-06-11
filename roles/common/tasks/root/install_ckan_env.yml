@@ -31,6 +31,12 @@
   become_method: sudo
   file: 'path=/usr/lib/ckan state=directory owner=ckan'
 
+- name: Make filestore directory
+  become: true
+  become_user: root
+  become_method: sudo
+  file: 'path=/home/{{ ckan_system_user }}/filestore state=directory owner=ckan'
+
 - name: Run CKAN installation script
   become: true
   become_user: root

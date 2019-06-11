@@ -114,18 +114,23 @@
     dest: '/etc/jetty9/start.ini'
     regexp: NO_START
     line: 'NO_START = 0'
-- name: solr schema
-  become: yes
-  become_user: root
-  become_method: sudo
-  command: mv /etc/solr/conf/schema.xml /etc/solr/conf/schema.xml.bak
+#- name: solr schema
+#  become: yes
+#  become_user: root
+#  become_method: sudo
+#  command: mv /etc/solr/conf/schema.xml /etc/solr/conf/schema.xml.bak
+
+- name: check solr schema xml
+  stat:
+    path: /etc/solr/conf/schema.xml
+  register: sch
 
 - name: solr schema copy
   become: yes
   become_user: root
   become_method: sudo
   shell: ln -s /usr/lib/ckan/default/src/ckan/ckan/config/solr/schema.xml /etc/solr/conf/schema.xml
-
+  when: sch.stat.exists == False
 
 - name: check solr jetty xml
   stat:
@@ -145,7 +150,6 @@
   become_method: sudo
   stat:
     path: /var/solr/data/ckan/
-  register: ckcore
 
 - name: Create Solr CKAN configuration
   become: true
@@ -153,7 +157,6 @@
   shell: ./solr create_core -c ckan creates=/var/solr/data/ckan/conf/solrconfig.xml
   args:
     chdir: /opt/solr-6.5.1/bin/
-  when: ckcore.stat.exists == false
 
 - name: Copy Solr Config
   become: true
@@ -163,17 +166,28 @@
     src: ../../../templates/default/solr/solrconfig.xml
     dest: /var/solr/data/ckan/conf
 
-- name: Remove solr managed-schema
-  file:
-    path: /usr/lib/ckan/default/src/ckan/ckan/config/solr/managed-schema
-    state: absent
+#- name: Remove solr managed-schema
+#  file:
+#    path: /usr/lb/ckan/default/src/ckan/ckan/config/solr/managed-schema
+#    state: absent
 
 - name: copy ckan schema to new solr core
   become: yes
   become_user: solr
   become_method: sudo
-  shell: cp /usr/lib/ckan/default/src/ckan/ckan/config/solr/schema.xml /var/solr/data/ckan/conf/schema.xml
+  template:
+    src: ../../../templates/default/solr/schema.xml
+    dest: /var/solr/data/ckan/conf/schema.xml
   register: symnewschema
+
+- name: add managed schema conf
+  become: yes
+  become_user: solr
+  lineinfile:
+    dest: '/var/solr/data/ckan/conf/managed-schema'
+    regexp: </schema>
+    insertbefore: </schema>
+    line: '<schemaFactory class="ManagedIndexSchemaFactory"/>'
 
 - name: Initialize CKAN database
   become_user: root
@@ -193,6 +207,16 @@
     exit
   changed_when: False
   register: ckan_admin_user
+
+- name: Create admin account
+  become_user: ckan
+  become: yes
+  shell: |
+    . /usr/lib/ckan/default/bin/activate
+    cd /usr/lib/ckan/default/src/ckan
+    echo '12345678' | paster sysadmin add ckan -c /etc/ckan/default/development.ini
+    exit
+
 
 - name: Ensure Solr is enabled on boot
   service:
