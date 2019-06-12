@@ -63,14 +63,6 @@
   apt:
     name: redis-server
 
-# Install solr-jetty or solr-tomcat
-- name: solr-jetty || solr-tomcat
-  become: true
-  become_user: root
-  become_method: sudo
-  apt:
-    name: solr-jetty
-
 # Install Apache 2
 - name: Install apache and mods
   become: true
@@ -101,12 +93,12 @@
     name: apache2
     state: stopped
 
-- name: check solr jetty xml
+- name: check apache2 ckan conf
   stat:
     path: /etc/apache2/sites-available/ckan_default.conf
   register: ad2c
 
-- name: solr jetty xml copy
+- name: apache2 ckan conf
   become: yes
   become_user: root
   become_method: sudo
@@ -128,6 +120,20 @@
     nginxpack:
       - nginx-common
       - nginx
+
+- name: check nginx ckan conf
+  stat:
+    path: /etc/nginx/sites-available/ckan
+  register: ngc
+
+- name: nginx ckan conf
+  become: yes
+  become_user: root
+  become_method: sudo
+  template:
+    src: ../../../templates/default/nginx/ckan
+    dest: /etc/nginx/sites-available/
+  when: ad2c.stat.exists == false
 
 ##Install Postfix
 - name: Install postfix

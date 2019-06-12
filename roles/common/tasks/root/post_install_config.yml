@@ -1,16 +1,28 @@
 ---
 
-- name: Enable Ckan site
+- name: Enable Ckan apache site
   become: true
   become_user: root
   become_method: sudo
   shell: |
     a2ensite ckan_default
     a2dissite 000-default
-    rm -vi /etc/nginx/sites-enabled/default
+    echo 'y' | rm -vi /etc/nginx/sites-enabled/default
     ln -s /etc/nginx/sites-available/ckan /etc/nginx/sites-enabled/ckan_default
     service apache2 restart
     service nginx restart
     service apache2 reload
     service nginx reload
     exit
+
+- name: Enable Ckan nginx site
+  become: true
+  become_user: root
+  become_method: sudo
+  shell: |
+    a2ensite ckan_default
+    a2dissite 000-default
+    echo 'y' | rm -vi /etc/nginx/sites-enabled/default
+    ln -s /etc/nginx/sites-available/ckan /etc/nginx/sites-enabled/ckan_default
+    service apache2 reload
+    service nginx reload

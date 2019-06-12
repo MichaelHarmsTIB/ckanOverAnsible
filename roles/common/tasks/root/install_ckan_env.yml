@@ -19,11 +19,11 @@
   become_method: sudo
   file: 'path={{ ckan_install_base_path }}/lib/default state=directory owner={{ ckan_system_user }}'
 
-- name: Link conf directory to /etc/ckan
-  become: true
-  become_user: root
-  become_method: sudo
-  file: 'src={{ ckan_conf_path }} dest=/etc/ckan/default state=link'
+#- name: Link conf directory to /etc/ckan
+#  become: true
+#  become_user: root
+#  become_method: sudo
+#  file: 'src={{ ckan_conf_path }} dest=/etc/ckan/default/ state=link'
 
 - name: Make secondary directory to link installation into
   become: true

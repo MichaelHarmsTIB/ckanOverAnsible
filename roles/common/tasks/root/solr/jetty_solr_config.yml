@@ -88,61 +88,27 @@
 #    name: solr
 #    enabled: yes
 
-- name: Define Jetty Port
-  become: yes
-  become_user: root
-  become_method: sudo
-  lineinfile:
-    dest: '/etc/jetty9/start.ini'
-    regexp: jetty.port
-    line: 'jetty.port = 8983'
 
-- name: Define Jetty host
-  become: yes
-  become_user: root
-  become_method: sudo
-  lineinfile:
-    dest: '/etc/jetty9/start.ini'
-    regexp: jetty.host
-    line: 'jetty.host = 127.0.0.1'
-
-- name: Define Jetty start
-  become: yes
-  become_user: root
-  become_method: sudo
-  lineinfile:
-    dest: '/etc/jetty9/start.ini'
-    regexp: NO_START
-    line: 'NO_START = 0'
 #- name: solr schema
 #  become: yes
 #  become_user: root
 #  become_method: sudo
 #  command: mv /etc/solr/conf/schema.xml /etc/solr/conf/schema.xml.bak
 
-- name: check solr schema xml
-  stat:
-    path: /etc/solr/conf/schema.xml
-  register: sch
+#- name: check solr schema xml
+#  stat:
+#    path: /etc/solr/conf/schema.xml
+#  register: sch
+#
 
-- name: solr schema copy
-  become: yes
-  become_user: root
-  become_method: sudo
-  shell: ln -s /usr/lib/ckan/default/src/ckan/ckan/config/solr/schema.xml /etc/solr/conf/schema.xml
-  when: sch.stat.exists == False
+#- name: solr schema copy
+#  become: yes
+#  become_user: root
+#  become_method: sudo
+#  shell: ln -s /usr/lib/ckan/default/src/ckan/ckan/config/solr/schema.xml /etc/solr/conf/schema.xml
+#  when: sch.stat.exists == False
 
-- name: check solr jetty xml
-  stat:
-    path: /var/lib/jetty9/webapps/solr.xml
-  register: sj
 
-- name: solr jetty xml copy
-  become: yes
-  become_user: root
-  become_method: sudo
-  command: ln -s /etc/solr/solr-jetty.xml /var/lib/jetty9/webapps/solr.xml
-  when: sj.stat.islnk == false
 
 - name: check ckan core exists
   become: true
@@ -150,6 +116,7 @@
   become_method: sudo
   stat:
     path: /var/solr/data/ckan/
+  register: cor
 
 - name: Create Solr CKAN configuration
   become: true
@@ -157,6 +124,7 @@
   shell: ./solr create_core -c ckan creates=/var/solr/data/ckan/conf/solrconfig.xml
   args:
     chdir: /opt/solr-6.5.1/bin/
+  when: cor.stat.exists == False
 
 - name: Copy Solr Config
   become: true
@@ -208,15 +176,14 @@
   changed_when: False
   register: ckan_admin_user
 
-- name: Create admin account
+- name: ----- Create admin account -----
   become_user: ckan
   become: yes
   shell: |
     . /usr/lib/ckan/default/bin/activate
     cd /usr/lib/ckan/default/src/ckan
-    echo '12345678' | paster sysadmin add ckan -c /etc/ckan/default/development.ini
+    echo 'y' | paster sysadmin add ckan email=ckan@localhost password=12345678 name=ckan -c /etc/ckan/default/development.ini
     exit
-
 
 - name: Ensure Solr is enabled on boot
   service:

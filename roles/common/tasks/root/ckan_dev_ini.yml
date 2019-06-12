@@ -9,21 +9,12 @@
     src: '../../templates/default/ckan/development.ini'
     dest: /etc/ckan/default/
 
-- name: copy jetty9 default
-  become: yes
-  become_user: root
-  become_method: sudo
-  copy:
-    remote_src: no
-    src: '../../templates/default/jetty9/jetty9'
-    dest: /etc/default/
-
 - name: Define sql connection
   become: yes
   become_user: root
   become_method: sudo
   lineinfile:
-    dest: '/home/ckan/ckan/etc/default/development.ini'
+    dest: '/etc/ckan/default/development.ini'
     regexp: sqlalchemy.url
     line: 'sqlalchemy.url = postgresql://ckan_default:ckan123@localhost/ckan_default'
 
