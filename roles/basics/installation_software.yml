@@ -32,7 +32,7 @@
     - python-semanage
     - policycoreutils-python-utils
 
-- name: Install openjdk-8-jdk
+- name: Install openjdk8-jdk
   become: true
   become_user: root
   become_method: sudo
@@ -103,7 +103,7 @@
   become_user: root
   become_method: sudo
   template:
-    src: ../../../templates/default/apache2/ckan_default.conf
+    src: ../templates/default/apache2/ckan_default.conf
     dest: /etc/apache2/sites-available/
   when: ad2c.stat.exists == false
 
@@ -131,7 +131,7 @@
   become_user: root
   become_method: sudo
   template:
-    src: ../../../templates/default/nginx/ckan
+    src: ../templates/default/nginx/ckan
     dest: /etc/nginx/sites-available/
   when: ad2c.stat.exists == false
 

@@ -1,7 +1,0 @@
----
-
-- name: include roles
-  roles:
-    - defaults
-    - tasks
-    - handlers

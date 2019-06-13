@@ -1,9 +1,0 @@
----
-# file site.yml
-
-- hosts: osboxes
-
-  roles:
-      - common
-      - common/tasks
-      - handlers

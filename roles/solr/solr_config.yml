@@ -44,72 +44,6 @@
     owner: solr
     recurse: true
 
-
-#su -u solr -c "/opt/solr/bin/solr create_core -c mycore"
-
-#- name: Remove the Solr installation files
-#  file:
-#    path: "{{ item }}"
-#    state: absent
-#  with_items:
-#    - ~/solr-6.5.1.tgz
-#    - ~/solr-6.5.1/
-#
-#su -u solr -c
-
-##
-##
-#- name: Ensure managed-schema is absent
-#  file:
-#    path: '/var/solr/data/ckan/conf/managed-schema'
-#    state: absent
-#
-#
-#- name: Ensure solrconfig.xml for CKAN is present
-#  template:
-#    src: "solrconfig.xml"
-#    dest: "/var/solr/data/ckan/conf/solrconfig.xml"
-#
-#
-# Solr might not be running as a system service, so don't invoke systemd
-#- name: Ensure Solr is stopped
-#  shell: service solr stop
-#
-#
-#- name: Ensure Solr deamon is reloaded
-#  systemd:
-#    name: solr
-#    daemon_reload: yes
-#  when: solr_installed.changed
-#
-#
-#- name: Ensure Solr is enabled on boot
-#  service:
-#    name: solr
-#    enabled: yes
-
-
-#- name: solr schema
-#  become: yes
-#  become_user: root
-#  become_method: sudo
-#  command: mv /etc/solr/conf/schema.xml /etc/solr/conf/schema.xml.bak
-
-#- name: check solr schema xml
-#  stat:
-#    path: /etc/solr/conf/schema.xml
-#  register: sch
-#
-
-#- name: solr schema copy
-#  become: yes
-#  become_user: root
-#  become_method: sudo
-#  shell: ln -s /usr/lib/ckan/default/src/ckan/ckan/config/solr/schema.xml /etc/solr/conf/schema.xml
-#  when: sch.stat.exists == False
-
-
-
 - name: check ckan core exists
   become: true
   become_user: root
@@ -131,31 +65,26 @@
   become_user: root
   become_method: sudo
   template:
-    src: ../../../templates/default/solr/solrconfig.xml
+    src: ../templates/default/solr/solrconfig.xml
     dest: /var/solr/data/ckan/conf
-
-#- name: Remove solr managed-schema
-#  file:
-#    path: /usr/lb/ckan/default/src/ckan/ckan/config/solr/managed-schema
-#    state: absent
 
 - name: copy ckan schema to new solr core
   become: yes
   become_user: solr
   become_method: sudo
   template:
-    src: ../../../templates/default/solr/schema.xml
+    src: ../templates/default/solr/schema.xml
     dest: /var/solr/data/ckan/conf/schema.xml
   register: symnewschema
 
-- name: add managed schema conf
-  become: yes
-  become_user: solr
-  lineinfile:
-    dest: '/var/solr/data/ckan/conf/managed-schema'
-    regexp: </schema>
-    insertbefore: </schema>
-    line: '<schemaFactory class="ManagedIndexSchemaFactory"/>'
+#- name: add managed schema conf
+#  become: yes
+#  become_user: solr
+#  lineinfile:
+#    dest: '/var/solr/data/ckan/conf/managed-schema'
+#    regexp: </schema>
+#    insertbefore: </schema>
+#    line: '<schemaFactory class="ManagedIndexSchemaFactory"/></schema>'
 
 - name: Initialize CKAN database
   become_user: root

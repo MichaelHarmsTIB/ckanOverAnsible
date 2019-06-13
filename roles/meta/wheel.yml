@@ -1,0 +1,31 @@
+---
+
+- name: Ensure a 'wheel' group exists
+  group:
+    name: wheel
+    state: present
+
+- name: Allow 'wheel' group to have passwordless sudo
+  become: true
+  become_user: root
+  become_method: sudo
+  lineinfile:
+    dest: '/etc/sudoers'
+    state: present
+    regexp: '^%wheel'
+    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+    validate: visudo -cf %s
+
+
+#- name: Ensure CKAN user exists
+#  become: true
+#  become_user: root
+#  become_method: sudo
+#  user:
+#    name: ckan
+#    comment: "CKAN User"
+#    home: /usr/lib/ckan
+#    shell: /bin/bash
+#    groups: wheel
+#    append: yes
+
