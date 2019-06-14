@@ -78,4 +78,4 @@
     src: ../../templates/default/apache2/apache.wsgi
     dest: /etc/ckan/default/apache.wsgi
 
-
+- import_tasks: custom_template/ckan_customize.yml

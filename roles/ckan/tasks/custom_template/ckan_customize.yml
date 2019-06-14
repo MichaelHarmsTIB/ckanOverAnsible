@@ -1,0 +1,22 @@
+---
+
+- name: Install FID-Move custom CKAN theme
+  become_user: root
+  become: yes
+  shell: |
+    su -s /bin/bash - ckan
+    cd /usr/lib/ckan
+    . default/bin/activate
+    pip install -e git+https://git.tib.eu/micharms/fid-move-ckan-layout.git
+    exit
+    creates=/usr/lib/ckan/default/src/fid-move-ckan-layout/
+  notify: Restart Apache webserver
+
+- name: Ensure latest version of Fid-Move custom CKAN theme is installed
+  become_user: root
+  become: yes
+  git:
+    repo: "https://git.tib.eu/micharms/fid-move-ckan-layout.git"
+    dest: "/usr/lib/ckan/default/src/fid-move-ckan-layout/"
+    version: dev
+    update: "yes"
