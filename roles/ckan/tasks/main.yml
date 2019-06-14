@@ -1,5 +1,6 @@
 ---
 
+- import_tasks: ckan_dev_ini.yml
 
 - name: Create directory for ckan config files
   become: true
@@ -57,7 +58,7 @@
   become_user: root
   become_method: sudo
   template:
-    src: ../templates/default/ckan/development.ini
+    src: ../../templates/default/ckan/development.ini
     dest: /etc/ckan/default/development.ini
   when: not ansible_check_mode
 
@@ -74,7 +75,7 @@
   become_user: root
   become: yes
   template:
-    src: ../templates/default/apache2/apache.wsgi
+    src: ../../templates/default/apache2/apache.wsgi
     dest: /etc/ckan/default/apache.wsgi
 
 

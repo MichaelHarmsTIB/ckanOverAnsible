@@ -131,7 +131,7 @@
   become_user: root
   become_method: sudo
   template:
-    src: ../templates/default/nginx/ckan
+    src: ../../templates/default/nginx/ckan
     dest: /etc/nginx/sites-available/
   when: ad2c.stat.exists == false
 

@@ -65,7 +65,7 @@
   become_user: root
   become_method: sudo
   template:
-    src: ../templates/default/solr/solrconfig.xml
+    src: ../../templates/default/solr/solrconfig.xml
     dest: /var/solr/data/ckan/conf
 
 - name: copy ckan schema to new solr core
@@ -73,7 +73,7 @@
   become_user: solr
   become_method: sudo
   template:
-    src: ../templates/default/solr/schema.xml
+    src: ../../templates/default/solr/schema.xml
     dest: /var/solr/data/ckan/conf/schema.xml
   register: symnewschema
 

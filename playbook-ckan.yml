@@ -1,16 +1,13 @@
 ---
 # file playbook-ckan.yml
 
-- hosts: all
-
-- name: include roles
+- hosts: osboxes
   roles:
-    - meta
     - basics
     - postgres
     - ckan
+    - redis
     - solr
     - deploy
-    - handlers
 
 # For Plugin Redis config:
