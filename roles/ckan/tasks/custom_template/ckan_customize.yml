@@ -7,7 +7,7 @@
     su -s /bin/bash - ckan
     cd /usr/lib/ckan
     . default/bin/activate
-    pip install -e git+https://git.tib.eu/micharms/fid-move-ckan-layout.git
+    pip install -e git+https://git.tib.eu/micharms/fid-move-ckan-layout.git#egg=fid-move
     exit
     creates=/usr/lib/ckan/default/src/fid-move-ckan-layout/
   notify: Restart Apache webserver
@@ -16,7 +16,7 @@
   become_user: root
   become: yes
   git:
-    repo: "https://git.tib.eu/micharms/fid-move-ckan-layout.git"
+    repo: "https://git.tib.eu/micharms/fid-move-ckan-layout.git#egg=fid-move"
     dest: "/usr/lib/ckan/default/src/fid-move-ckan-layout/"
     version: dev
     update: "yes"
