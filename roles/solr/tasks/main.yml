@@ -55,20 +55,10 @@
 - name: Create Solr CKAN configuration
   become: true
   become_user: solr
-  shell: ./solr create_core -c ckan #creates=/var/solr/data/ckan/conf/solrconfig.xml
+  shell: ./solr create_core -c ckan
   args:
     chdir: /opt/solr-6.5.1/bin/
   when: cor.stat.exists == False
-
-#- name: Define solrconfig
-#  become: yes
-#  become_user: solr
-#  become_method: sudo
-#  lineinfile:
-#    dest: '/var/solr/data/ckan/conf/solrconfig.xml'
-#    regexp: sqlalchemy.url
-#    line: 'sqlalchemy.url = postgresql://ckan_default:ckan123@localhost/ckan_default'
-
 
 - name: copy ckan schema to new solr core
   become: yes
@@ -115,6 +105,7 @@
     cd /usr/lib/ckan/default/src/ckan
     paster db init -c /etc/ckan/default/development.ini
     exit
+
 - name: Check if CKAN admin user exists
   become_user: ckan
   become: yes
