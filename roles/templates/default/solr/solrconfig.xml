@@ -1129,7 +1129,6 @@
 
        See http://wiki.apache.org/solr/GuessingFieldTypes
     -->
-  <schemaFactory class="ManagedIndexSchemaFactory"/>
   <updateProcessor class="solr.UUIDUpdateProcessorFactory" name="uuid"/>
   <updateProcessor class="solr.RemoveBlankFieldUpdateProcessorFactory" name="remove-blank"/>
   <updateProcessor class="solr.FieldNameMutatingUpdateProcessorFactory" name="field-name-mutating">
@@ -1147,7 +1146,7 @@
       <str>yyyy-MM-dd HH:mm[:ss[,SSS]][z</str>
       <str>[EEE, ]dd MMM yyyy HH:mm[:ss] z</str>
       <str>EEEE, dd-MMM-yy HH:mm:ss z</str>
-      <str>EEE MMM ppd HH:mm:ss [z ]yyyy</str>
+      <str>EEE MMM dd HH:mm:ss [z ]yyyy</str>
     </arr>
   </updateProcessor>
 <!--  <updateProcessor class="solr.AddSchemaFieldsUpdateProcessorFactory" name="add-schema-fields">

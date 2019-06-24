@@ -78,4 +78,13 @@
     src: ../../templates/default/apache2/apache.wsgi
     dest: /etc/ckan/default/apache.wsgi
 
+- name: Give user Ckan rights
+  become_user: root
+  become: yes
+  file:
+    path: /usr/lib/ckan
+    state: directory
+    recurse: yes
+    owner: ckan
+
 - import_tasks: custom_template/ckan_customize.yml

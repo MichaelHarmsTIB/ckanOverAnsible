@@ -55,18 +55,20 @@
 - name: Create Solr CKAN configuration
   become: true
   become_user: solr
-  shell: ./solr create_core -c ckan creates=/var/solr/data/ckan/conf/solrconfig.xml
+  shell: ./solr create_core -c ckan #creates=/var/solr/data/ckan/conf/solrconfig.xml
   args:
     chdir: /opt/solr-6.5.1/bin/
   when: cor.stat.exists == False
 
-- name: Copy Solr Config
-  become: true
-  become_user: root
-  become_method: sudo
-  template:
-    src: ../../templates/default/solr/solrconfig.xml
-    dest: /var/solr/data/ckan/conf
+#- name: Define solrconfig
+#  become: yes
+#  become_user: solr
+#  become_method: sudo
+#  lineinfile:
+#    dest: '/var/solr/data/ckan/conf/solrconfig.xml'
+#    regexp: sqlalchemy.url
+#    line: 'sqlalchemy.url = postgresql://ckan_default:ckan123@localhost/ckan_default'
+
 
 - name: copy ckan schema to new solr core
   become: yes
@@ -77,14 +79,33 @@
     dest: /var/solr/data/ckan/conf/schema.xml
   register: symnewschema
 
-#- name: add managed schema conf
+- name: Clean managed schema
+  become: yes
+  become_user: solr
+  file:
+    state: absent
+    path: "/var/solr/data/ckan/conf/managed-schema"
+
+- name: add managed schema conf Schema Factory
+  become: yes
+  become_user: solr
+  lineinfile:
+    dest: '/var/solr/data/ckan/conf/solrconfig.xml'
+    regexp: </config>
+    insertbefore: </config>
+    line: '<schemaFactory class="ClassicIndexSchemaFactory"/></config>'
+
+#- name: delete initParams update
 #  become: yes
 #  become_user: solr
 #  lineinfile:
-#    dest: '/var/solr/data/ckan/conf/managed-schema'
-#    regexp: </schema>
-#    insertbefore: </schema>
-#    line: '<schemaFactory class="ManagedIndexSchemaFactory"/></schema>'
+#    dest: '/var/solr/data/ckan/conf/solrconfig.xml'
+#    regexp: '<initParams path="/update/**">
+#              <lst name="defaults">
+#                <str name="update.chain">add-unknown-fields-to-the-schema</str>
+#              </lst>
+#              </initParams>'
+#    line: ' '
 
 - name: Initialize CKAN database
   become_user: root
