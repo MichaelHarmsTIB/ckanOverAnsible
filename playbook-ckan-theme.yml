@@ -1,0 +1,8 @@
+---
+# file playbook-fid-move-layout
+
+- hosts: osboxes
+  gather_facts: no
+  roles:
+    - custom_template
+

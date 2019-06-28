@@ -30,7 +30,7 @@
   become: true
   become_user: root
   become_method: sudo
-  file: 'path=/home/{{ ckan_system_user }}/filestore state=directory owner=ckan'
+  file: 'path=/home/{{ ckan_system_user }}/filestore state=directory owner=www-data'
 
 - name: Run CKAN installation script
   become: true
@@ -87,4 +87,3 @@
     recurse: yes
     owner: ckan
 
-- import_tasks: custom_template/ckan_customize.yml

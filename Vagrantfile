@@ -10,14 +10,14 @@ GUI = false
 CPU = 2
 RAM = 2048
 
-DOMAIN  = "ckan-tib-vagrant-test"
+DOMAIN  = "ckan-tib-vagrant"
 HOSTS = {
-  "ckan-tib-vagrant-test" => [2, 2048, GUI, BOX],
+  "ckan-tib-vagrant" => [2, 2048, GUI, BOX],
 }
 
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.ssh.insert_key = false
+  config.ssh.insert_key = true
 
   HOSTS.each do | (name, cfg) |
    cpu, ram, gui, box = cfg

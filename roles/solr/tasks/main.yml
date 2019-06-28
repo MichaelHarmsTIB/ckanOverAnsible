@@ -9,7 +9,6 @@
     checksum: sha256:7c6a7d4474d5e847a8ddd0a4717d33bf5db07adf17c3d36ad1532c72885bd5d3
     force: no
 
-
 - name: Expand Solr archive
   become: true
   become_user: root
@@ -76,26 +75,14 @@
     state: absent
     path: "/var/solr/data/ckan/conf/managed-schema"
 
-- name: add managed schema conf Schema Factory
+- name: copy solrconfig
   become: yes
   become_user: solr
-  lineinfile:
-    dest: '/var/solr/data/ckan/conf/solrconfig.xml'
-    regexp: </config>
-    insertbefore: </config>
-    line: '<schemaFactory class="ClassicIndexSchemaFactory"/></config>'
-
-#- name: delete initParams update
-#  become: yes
-#  become_user: solr
-#  lineinfile:
-#    dest: '/var/solr/data/ckan/conf/solrconfig.xml'
-#    regexp: '<initParams path="/update/**">
-#              <lst name="defaults">
-#                <str name="update.chain">add-unknown-fields-to-the-schema</str>
-#              </lst>
-#              </initParams>'
-#    line: ' '
+  become_method: sudo
+  template:
+    src: ../../templates/default/solr/solrconfig.xml
+    dest: /var/solr/data/ckan/conf/solrconfig.xml
+  register: solrconf
 
 - name: Initialize CKAN database
   become_user: root
@@ -130,3 +117,10 @@
   service:
       name: solr
       enabled: yes
+
+- name: Restart solr
+  become: yes
+  become_user: root
+  service:
+      name: solr
+      state: restarted
