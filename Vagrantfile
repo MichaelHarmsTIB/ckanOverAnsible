@@ -5,45 +5,34 @@
 # Configuration variables.
 VAGRANTFILE_API_VERSION = "2"
 
-BOX = 'debian/stretch64'
-GUI = false
-CPU = 2
-RAM = 2048
 
-DOMAIN  = "ckan-tib-vagrant"
-HOSTS = {
-  "ckan-tib-vagrant" => [2, 2048, GUI, BOX],
-}
-
+DOMAIN  = 'ckan'
+name = 'test123'
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.insert_key = true
 
-  HOSTS.each do | (name, cfg) |
-   cpu, ram, gui, box = cfg
 
     config.vm.define name do |machine|
-      machine.vm.box = box
+      machine.vm.box = 'debian/stretch64'
+      machine.vm.box_version = "9.8.0"
 
       machine.vm.provider "virtualbox" do |vbox|
-        vbox.gui    = gui
-        vbox.cpus   = cpu
-        vbox.memory = ram
+        vbox.gui    = true
+        vbox.cpus   = 2
+        vbox.memory = 2048
         vbox.name   = name
-        vbox.customize ["guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 10000]
       end
 
       machine.vm.hostname = name + DOMAIN
-      machine.vm.network 'public_network', bridge: [
-                                             "en1: enxc8f750a9129d",
-                                             "en6: Intel PRO/1000 MT Desktop (82540EM)",
-                                           ]
-      machine.vm.synced_folder ".", "/vagrant", disabled: true
-      machine.vm.provision "shell", path: "vagrant/basic_installation.sh"
-      machine.vm.provision "shell",
-        inline: "sudo timedatectl set-timezone Europe/Amsterdam", run: "always"
+      machine.vm.network "private_network",  ip: "192.168.10.50"
+      machine.vm.provision "shell", inline: "sudo timedatectl set-timezone Europe/Amsterdam", run: "always"
+      machine.vm.provision "ansible" do |ansible|
+          ansible.playbook = "playbook-ckan.yml"
+          ansible.verbose = "vvv"
+        end
+
     end
-  end
 
 
 end
