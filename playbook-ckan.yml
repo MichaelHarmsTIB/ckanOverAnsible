@@ -1,7 +1,7 @@
 ---
 # file playbook-ckan.yml
 
-- hosts: osboxes
+- hosts: all
   roles:
     - basics
     - postgres
