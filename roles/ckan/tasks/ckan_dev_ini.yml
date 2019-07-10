@@ -54,3 +54,4 @@
     regexp: ckan.storage_path
     line: 'ckan.storage_path = /var/lib/ckan/default'
 
+

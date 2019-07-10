@@ -87,3 +87,7 @@
     recurse: yes
     owner: ckan
 
+- import_tasks: datapusher.yml
+
+
+

@@ -1,0 +1,55 @@
+---
+- name: Create directory for datapusher
+  become: true
+  become_user: root
+  become_method: sudo
+  file: 'path=/usr/lib/ckan/datapusher/src owner={{ ckan_system_user }} state=directory'
+
+- name: install datapusher
+  become: yes
+  become_user: root
+  git:
+    repo: https://github.com/ckan/datapusher.git
+    dest: /usr/lib/ckan/datapusher/src
+    version: 0.0.14
+
+- name: Install Datapusher
+  become: true
+  become_user: root
+  become_method: sudo
+  shell: |
+    virtualenv /usr/lib/ckan/datapusher
+    . default/bin/activate
+    pip install --ignore-installed -r default/src/ckan/pip-requirements.txt
+    python setup.py develop
+    exit
+  args:
+    chdir: /usr/lib/ckan/datapusher/bin/
+
+- name: Copy datapusher conf
+  become_user: root
+  become: yes
+  template:
+    src: ../../templates/default/apache2/datapusher.conf
+    dest: /etc/apache2/sites-available/datapusher.conf
+
+- name: Ensure WSGI datapusher for CKAN is present
+  become_user: root
+  become: yes
+  template:
+    src: ../../templates/default/apache2/datapusher.wsgi
+    dest: /etc/ckan/datapusher.wsgi
+
+- name: Copy datapusher settings conf
+  become_user: root
+  become: yes
+  template:
+    src: ../../templates/default/apache2/datapusher_settings.py
+    dest: /etc/ckan/datapusher_settings.py
+
+- name: Install FID-Move custom CKAN theme
+  become_user: root
+  become: yes
+  shell: |
+    echo "NameVirtualHost *:8800" >> /etc/apache2/ports.conf
+    echo "Listen 8800" >> /etc/apache2/ports.conf
