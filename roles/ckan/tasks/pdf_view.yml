@@ -1,0 +1,11 @@
+---
+## Pdf View Plugin ####
+- name: Install pdf view
+  become_user: root
+  become: yes
+  shell: |
+    cd /usr/lib/ckan
+    . default/bin/activate
+    cd /usr/lib/ckan/default/bin
+    pip install ckanext-pdfview
+    exit

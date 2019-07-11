@@ -53,6 +53,8 @@
 - name: Check whether there is a virtualenv already
   stat: path={{ ckan_install_path }}/bin/activate
 
+- import_tasks: pdf_view.yml
+
 - name: Ensure CKAN config is present
   become: true
   become_user: root
@@ -88,6 +90,13 @@
     owner: ckan
 
 - import_tasks: datapusher.yml
+
+- name: Make filestore directory
+  become: true
+  become_user: root
+  become_method: sudo
+  file: 'path=/home/{{ ckan_system_user }}/filestore state=directory owner=www-data recurse=yes'
+
 
 
 

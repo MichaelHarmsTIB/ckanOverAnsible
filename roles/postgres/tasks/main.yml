@@ -1,13 +1,5 @@
 ---
 
-#- name: Create postgres user
-#  become: yes
-#  become_user: root
-#  postgresql_user:
-#    name: "postgres"
-#    password: "ckan123"
-#    state: present
-
 - name: Create ckan user
   become: yes
   become_user: postgres

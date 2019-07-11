@@ -6,6 +6,8 @@ SECRET_KEY = str(uuid.uuid4())
 USERNAME = str(uuid.uuid4())
 PASSWORD = str(uuid.uuid4())
 
+MAX_CONTENT_LENGTH = 10000000000
+
 NAME = 'datapusher'
 
 # database

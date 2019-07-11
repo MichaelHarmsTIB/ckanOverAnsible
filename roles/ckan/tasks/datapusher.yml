@@ -5,26 +5,38 @@
   become_method: sudo
   file: 'path=/usr/lib/ckan/datapusher/src owner={{ ckan_system_user }} state=directory'
 
+- name: Install virt env
+  become: true
+  become_user: root
+  become_method: sudo
+  shell: |
+    virtualenv /usr/lib/ckan/datapusher
+
 - name: install datapusher
   become: yes
   become_user: root
   git:
     repo: https://github.com/ckan/datapusher.git
-    dest: /usr/lib/ckan/datapusher/src
-    version: 0.0.14
+    dest: /usr/lib/ckan/datapusher/src/
+
+- name: Give user Ckan rights
+  become_user: root
+  become: yes
+  file:
+    path: /usr/lib/ckan
+    state: directory
+    recurse: yes
+    owner: ckan
 
 - name: Install Datapusher
   become: true
   become_user: root
   become_method: sudo
   shell: |
-    virtualenv /usr/lib/ckan/datapusher
-    . default/bin/activate
-    pip install --ignore-installed -r default/src/ckan/pip-requirements.txt
+    /usr/lib/ckan/datapusher/bin/pip install -r /usr/lib/ckan/datapusher/src/requirements.txt
+    cd /usr/lib/ckan/datapusher/src/
     python setup.py develop
     exit
-  args:
-    chdir: /usr/lib/ckan/datapusher/bin/
 
 - name: Copy datapusher conf
   become_user: root
@@ -47,9 +59,17 @@
     src: ../../templates/default/apache2/datapusher_settings.py
     dest: /etc/ckan/datapusher_settings.py
 
-- name: Install FID-Move custom CKAN theme
+- name: Apache datapusher ports
   become_user: root
   become: yes
   shell: |
     echo "NameVirtualHost *:8800" >> /etc/apache2/ports.conf
     echo "Listen 8800" >> /etc/apache2/ports.conf
+
+- name: set ckan datastore permissions
+  become_user: root
+  become: yes
+  shell:
+    cd /usr/lib/ckan/default/bin/
+    paster --plugin=ckan datastore set-permissions -c /etc/ckan/default/development.ini | sudo -u postgres psql --set ON_ERROR_STOP=1
+
