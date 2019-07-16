@@ -27,3 +27,10 @@
     ln -s /etc/nginx/sites-available/ckan /etc/nginx/sites-enabled/ckan_default
     service apache2 reload
     service nginx reload
+
+## Important to reset the write rules for www-data
+- name: Make filestore directory
+  become: true
+  become_user: root
+  become_method: sudo
+  file: 'path=/home/{{ ckan_system_user }}/filestore state=directory owner=www-data recurse=yes'

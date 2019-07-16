@@ -1,0 +1,33 @@
+---
+
+- name: check datacite installation
+  stat:
+    path: /usr/lib/ckan/default/src/ckan/ckanext/datacite/
+  register: dc
+
+- name: install datacite
+  become: yes
+  become_user: root
+  git:
+    repo: https://github.com/NaturalHistoryMuseum/ckanext-doi.git
+    dest: /usr/lib/ckan/default/src/ckan/ckanext/datacite/
+  when: dp.stat.exists == false
+
+- name: Give user Ckan rights
+  become_user: root
+  become: yes
+  file:
+    path: /usr/lib/ckan/default/src/ckan/ckanext/datacite/
+    state: directory
+    recurse: yes
+    owner: ckan
+
+- name: python setup datacite
+  become: true
+  become_user: root
+  become_method: sudo
+  shell: |
+    . /usr/lib/ckan/default/bin/activate
+    cd /usr/lib/ckan/default/src/ckan/ckanext/datacite/
+    python setup.py develop
+    exit

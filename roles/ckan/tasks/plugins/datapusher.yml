@@ -3,7 +3,10 @@
   become: true
   become_user: root
   become_method: sudo
-  file: 'path=/usr/lib/ckan/datapusher/src owner={{ ckan_system_user }} state=directory'
+  file:
+    path: /usr/lib/ckan/datapusher/src
+    owner: "{{ ckan_system_user }}"
+    state: directory
 
 - name: Install virt env
   become: true
@@ -12,12 +15,18 @@
   shell: |
     virtualenv /usr/lib/ckan/datapusher
 
+- name: check datapusher installation
+  stat:
+    path: /usr/lib/ckan/datapusher/src/
+  register: dp
+
 - name: install datapusher
   become: yes
   become_user: root
   git:
     repo: https://github.com/ckan/datapusher.git
     dest: /usr/lib/ckan/datapusher/src/
+  when: not dp.stat.exists
 
 - name: Give user Ckan rights
   become_user: root
@@ -28,7 +37,7 @@
     recurse: yes
     owner: ckan
 
-- name: Install Datapusher
+- name: Install Datapusher requirements
   become: true
   become_user: root
   become_method: sudo
@@ -37,6 +46,14 @@
     cd /usr/lib/ckan/datapusher/src/
     python setup.py develop
     exit
+
+- name: add pdftable
+  become_user: ckan
+  become: yes
+  lineinfile:
+    dest: /usr/lib/ckan/datapusher/src/requirements.txt
+    state: present
+    line: pdftables
 
 - name: Copy datapusher conf
   become_user: root
@@ -66,10 +83,11 @@
     echo "NameVirtualHost *:8800" >> /etc/apache2/ports.conf
     echo "Listen 8800" >> /etc/apache2/ports.conf
 
-- name: set ckan datastore permissions
-  become_user: root
-  become: yes
-  shell:
-    cd /usr/lib/ckan/default/bin/
-    paster --plugin=ckan datastore set-permissions -c /etc/ckan/default/development.ini | sudo -u postgres psql --set ON_ERROR_STOP=1
+#- name: set ckan datastore permissions
+#  become_user: ckan
+#  become: yes
+#  shell: |
+#    cd /usr/lib/ckan/default/bin/
+#    paster --plugin=ckan datastore set-permissions -c /etc/ckan/default/development.ini | sudo -u postgres psql --set ON_ERROR_STOP=1
+#    exit 0
 
