@@ -3,6 +3,7 @@
 
 - hosts: all
   roles:
+    - meta
     - basics
     - postgres
     - ckan

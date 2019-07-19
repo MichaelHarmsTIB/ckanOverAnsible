@@ -1,0 +1,39 @@
+---
+
+- name: Ensure a 'wheel' group exists
+  become: yes
+  become_user: root
+  group:
+    name: wheel
+    state: present
+
+- name: Allow 'wheel' group to have passwordless sudo
+  become: true
+  become_user: root
+  become_method: sudo
+  lineinfile:
+    dest: '/etc/sudoers'
+    state: present
+    regexp: '^%wheel'
+    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+    validate: visudo -cf %s
+
+
+- name: Ensure CKAN user exists
+  become: true
+  become_user: root
+  user:
+    name: ckan
+    password: '$6$F4NWXRFtSdCi8$DsB5vvMJYusQhSbvGXrYDXL6Xj37MUuqFCd4dGXdKd6NyxT3lpdELN07/Kpo7EjjWnm9zusFg/LLFv6oc.ynu/'
+    groups: wheel
+    state: present
+    createhome: yes
+    home: /home/ckan
+    shell: /bin/bash
+
+- name: Ensure vagrant user exists
+  become: true
+  become_user: root
+  user:
+    name: vagrant
+    groups: wheel

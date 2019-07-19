@@ -11,7 +11,7 @@
   git:
     repo: https://github.com/NaturalHistoryMuseum/ckanext-doi.git
     dest: /usr/lib/ckan/default/src/ckan/ckanext/datacite/
-  when: dp.stat.exists == false
+  when: dc.stat.exists == false
 
 - name: Give user Ckan rights
   become_user: root

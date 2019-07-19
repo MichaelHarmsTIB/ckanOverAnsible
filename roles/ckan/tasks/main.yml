@@ -53,6 +53,7 @@
 - name: Check whether there is a virtualenv already
   stat: path={{ ckan_install_path }}/bin/activate
 
+#plugin pdf view
 - import_tasks: plugins/pdf_view.yml
 
 - name: Ensure CKAN config is present
@@ -80,6 +81,15 @@
     src: ../../templates/default/apache2/apache.wsgi
     dest: /etc/ckan/default/apache.wsgi
 
+## Licenses for dataset upload
+- name: copy fid-move license.json
+  become_user: root
+  become: yes
+  template:
+    src: ../../templates/default/ckan/fid_move_licenses.json
+    dest: /etc/ckan/default/fid_move_licenses.json
+
+## Fix ckan user rights
 - name: Give user Ckan rights
   become_user: root
   become: yes
@@ -89,6 +99,7 @@
     recurse: yes
     owner: ckan
 
+# Plugins
 - import_tasks: plugins/datapusher.yml
 - import_tasks: plugins/datacite.yml
 

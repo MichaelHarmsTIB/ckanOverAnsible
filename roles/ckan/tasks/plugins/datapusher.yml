@@ -26,7 +26,7 @@
   git:
     repo: https://github.com/ckan/datapusher.git
     dest: /usr/lib/ckan/datapusher/src/
-  when: not dp.stat.exists
+  when: dp.stat.exists == false
 
 - name: Give user Ckan rights
   become_user: root
@@ -59,21 +59,21 @@
   become_user: root
   become: yes
   template:
-    src: ../../templates/default/apache2/datapusher.conf
+    src: ../../../templates/default/apache2/datapusher.conf
     dest: /etc/apache2/sites-available/datapusher.conf
 
 - name: Ensure WSGI datapusher for CKAN is present
   become_user: root
   become: yes
   template:
-    src: ../../templates/default/apache2/datapusher.wsgi
+    src: ../../../templates/default/apache2/datapusher.wsgi
     dest: /etc/ckan/datapusher.wsgi
 
 - name: Copy datapusher settings conf
   become_user: root
   become: yes
   template:
-    src: ../../templates/default/apache2/datapusher_settings.py
+    src: ../../../templates/default/apache2/datapusher_settings.py
     dest: /etc/ckan/datapusher_settings.py
 
 - name: Apache datapusher ports

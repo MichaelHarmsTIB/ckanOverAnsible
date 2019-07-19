@@ -1,0 +1,130 @@
+[
+  {
+    "domain_content": false,
+    "domain_data": true,
+    "domain_software": false,
+    "id": "CC BY-NC-SA",
+    "is_okd_compliant": false,
+    "is_osi_compliant": false,
+    "status": "active",
+    "title": "Creative Commons CC BY-NC-SA",
+    "url": "https://creativecommons.org"
+  },
+  {
+    "domain_content": false,
+    "domain_data": true,
+    "domain_software": false,
+    "id": "CC BY-NC-ND",
+    "is_okd_compliant": false,
+    "is_osi_compliant": false,
+    "status": "active",
+    "title": "Creative Commons CC BY-NC-ND",
+    "url": "https://creativecommons.org"
+  },
+  {
+    "domain_content": false,
+    "domain_data": true,
+    "domain_software": false,
+    "id": "GNU General Public License (GPL)",
+    "is_okd_compliant": false,
+    "is_osi_compliant": false,
+    "status": "active",
+    "title": "GNU General Public License (GPL)",
+    "url": "http://www.gnu.de/documents/gpl.de.html"
+  },
+  {
+    "domain_content": false,
+    "domain_data": true,
+    "domain_software": false,
+    "id": "Datenlizenz Deutschland Namensnennung 2.0",
+    "is_okd_compliant": false,
+    "is_osi_compliant": false,
+    "status": "active",
+    "title": "Datenlizenz Deutschland Namensnennung 2.0",
+    "url": "https://www.govdata.de/dl-de/by-2-0"
+  },
+  {
+    "domain_content": false,
+    "domain_data": true,
+    "domain_software": false,
+    "id": "Creative Commons Zero",
+    "is_okd_compliant": false,
+    "is_osi_compliant": false,
+    "status": "active",
+    "title": "Creative Commons Zero CCO",
+    "url": "https://creativecommons.org/publicdomain/zero/1.0/deed.de"
+  },
+  {
+    "domain_content": false,
+    "domain_data": true,
+    "domain_software": false,
+    "id": "CC BY",
+    "is_okd_compliant": false,
+    "is_osi_compliant": false,
+    "status": "active",
+    "title": "Creative Commons CC BY",
+    "url": "https://creativecommons.org"
+  },
+  {
+    "domain_content": true,
+    "domain_data": true,
+    "domain_software": true,
+    "id": "CC BY-SA",
+    "is_okd_compliant": true,
+    "is_osi_compliant": false,
+    "status": "active",
+    "title": "Creative Commons CC BY-SA",
+    "url": "https://creativecommons.org"
+  },
+  {
+    "domain_content": true,
+    "domain_data": true,
+    "domain_software": false,
+    "id": "CC BY-NC",
+    "is_okd_compliant": false,
+    "is_osi_compliant": false,
+    "status": "active",
+    "title": "Creative Commons CC BY-NC",
+    "url": "https://creativecommons.org"
+  },
+  {
+    "domain_content": true,
+    "domain_data": false,
+    "domain_software": false,
+    "family": "",
+    "id": "cc-by",
+    "is_okd_compliant": true,
+    "is_osi_compliant": false,
+    "maintainer": "",
+    "status": "active",
+    "title": "Creative Commons Attribution",
+    "url": "http://www.opendefinition.org/licenses/cc-by"
+  },
+  {
+    "domain_content": true,
+    "domain_data": false,
+    "domain_software": false,
+    "family": "",
+    "id": "CC BY-NC-SA",
+    "is_okd_compliant": true,
+    "is_osi_compliant": false,
+    "maintainer": "",
+    "status": "active",
+    "title": "Creative Commons CC BY-NC-SA",
+    "url": "http://creativecommons.org/licenses/by-sa/3.0/ch/legalcode.de"
+  },
+  {
+    "domain_content": true,
+    "domain_data": false,
+    "domain_software": false,
+    "family": "",
+    "id": "Other",
+    "is_okd_compliant": true,
+    "is_osi_compliant": false,
+    "maintainer": "",
+    "status": "active",
+    "title": "Other",
+    "url": "define local license"
+  }
+
+]
