@@ -1,6 +1,7 @@
 ---
 
-- import_tasks: ckan_dev_ini.yml
+- name: import prepare ckan ini
+  include: ckan_dev_ini.yml
 
 - name: Create directory for ckan config files
   become: true
@@ -54,7 +55,8 @@
   stat: path={{ ckan_install_path }}/bin/activate
 
 #plugin pdf view
-- import_tasks: plugins/pdf_view.yml
+- name: import plugin pdf view
+  include: plugins/pdf_view.yml
 
 - name: Ensure CKAN config is present
   become: true
@@ -100,8 +102,12 @@
     owner: ckan
 
 # Plugins
-- import_tasks: plugins/datapusher.yml
-- import_tasks: plugins/datacite.yml
+- name: import plugin datapusher
+  include: plugins/datapusher.yml
+
+- name: import plugin datacite
+  include: plugins/datacite.yml
+
 
 
 

@@ -7,6 +7,13 @@
     name: wheel
     state: present
 
+- name: Install acl
+  become: true
+  become_user: root
+  become_method: sudo
+  apt:
+    name: acl
+
 - name: Allow 'wheel' group to have passwordless sudo
   become: true
   become_user: root
@@ -31,9 +38,14 @@
     home: /home/ckan
     shell: /bin/bash
 
-- name: Ensure vagrant user exists
-  become: true
+- name: Grant user postgres read access to a file
+  become: yes
   become_user: root
-  user:
-    name: vagrant
-    groups: wheel
+  acl:
+    path: /var/tmp/
+    recursive: yes
+    entity: postgres
+    etype: user
+    permissions: rX
+    state: present
+

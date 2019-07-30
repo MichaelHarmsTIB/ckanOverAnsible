@@ -2,6 +2,8 @@
 # file playbook-ckan.yml
 
 - hosts: all
+  vars:
+    allow_world_readable_tmpfiles: true
   roles:
     - meta
     - basics

@@ -27,8 +27,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       machine.vm.hostname = name + DOMAIN
       machine.vm.network "private_network",  ip: "192.168.10.50"
       machine.vm.provision "shell", inline: "sudo timedatectl set-timezone Europe/Amsterdam", run: "always"
-      machine.vm.provision "ansible" do |ansible|
+      machine.vm.provision "ansible_local" do |ansible|
           ansible.playbook = "playbook-ckan.yml"
+          ansible.install_mode = "pip"
+          ansible.version = "2.8.0"
           ansible.verbose = "vvv"
         end
 
