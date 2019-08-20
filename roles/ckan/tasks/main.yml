@@ -102,8 +102,8 @@
     owner: ckan
 
 # Plugins
-- name: import plugin datapusher
-  include: plugins/datapusher.yml
+#- name: import plugin datapusher
+#  include: plugins/datapusher.yml
 
 - name: import plugin datacite
   include: plugins/datacite.yml

@@ -26,7 +26,7 @@
     - python-semanage
     - policycoreutils-python-utils
 
-- name: Install openjdk8-jdk
+- name: Install openjdk-8
   become: true
   become_user: root
   become_method: sudo
