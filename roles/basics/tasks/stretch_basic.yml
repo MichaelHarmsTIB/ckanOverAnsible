@@ -1,0 +1,138 @@
+---
+
+##### Some Tasks deactivated - depending on apt-repository
+## Need long time to update
+- name: Update apt
+  apt: update_cache=yes
+  become: true
+  become_user: root
+  become_method: sudo
+
+# Install Python Stuff
+- name: Install python-dev, python-pip, python-virtualenv etc.
+  become: true
+  become_user: root
+  become_method: sudo
+  apt:
+    name: "{{ python }}"
+  vars:
+    python:
+      - python2.7
+      - python-pip
+      - python-virtualenv
+      - python-psycopg2
+      - libpq-dev
+      - python-selinux
+      - python-semanage
+      - policycoreutils-python-utils
+
+- name: Install openjdk-8
+  become: true
+  become_user: root
+  become_method: sudo
+  apt:
+    name: openjdk-8-jdk
+
+# Install Git
+- name: Install git-core
+  become: true
+  become_user: root
+  become_method: sudo
+  apt:
+    name: git-core
+
+# Install Database
+- name: postgresql
+  become: true
+  become_user: root
+  become_method: sudo
+  apt:
+    name: postgresql
+
+# Install Redis
+- name: redis-server
+  become: true
+  become_user: root
+  become_method: sudo
+  apt:
+    name: redis-server
+
+# Install Apache 2
+- name: Install apache and mods
+  become: true
+  become_user: root
+  become_method: sudo
+  apt:
+    name: "{{ apachepack }}"
+  vars:
+    apachepack:
+      - apache2
+      - libapache2-mod-wsgi
+      - libapache2-mod-rpaf
+
+- name: configure apache port
+  become: yes
+  become_user: root
+  become_method: sudo
+  lineinfile:
+    dest: '/etc/apache2/ports.conf'
+    regexp: 'Listen 80'
+    line: 'Listen 8080'
+
+- name: Stop service apache2, if started
+  become: yes
+  become_user: root
+  become_method: sudo
+  service:
+    name: apache2
+    state: stopped
+
+- name: check apache2 ckan conf
+  stat:
+    path: /etc/apache2/sites-available/ckan_default.conf
+  register: ad2c
+
+- name: apache2 ckan conf
+  become: yes
+  become_user: root
+  become_method: sudo
+  template:
+    src: ../templates/default/apache2/ckan_default.conf
+    dest: /etc/apache2/sites-available/
+  when: ad2c.stat.exists == false
+
+
+### For Deploy Ckan comment it out if not necessary
+##Install nginx
+- name: Install nginx
+  become: true
+  become_user: root
+  become_method: sudo
+  apt:
+    name: "{{ nginxpack }}"
+  vars:
+    nginxpack:
+      - nginx-common
+      - nginx
+
+- name: check nginx ckan conf
+  stat:
+    path: /etc/nginx/sites-available/ckan
+  register: ngc
+
+- name: nginx ckan conf
+  become: yes
+  become_user: root
+  become_method: sudo
+  template:
+    src: ../../templates/default/nginx/ckan
+    dest: /etc/nginx/sites-available/
+  when: ad2c.stat.exists == false
+
+##Install Postfix
+- name: Install postfix
+  become: true
+  become_user: root
+  become_method: sudo
+  apt:
+    name: postfix
