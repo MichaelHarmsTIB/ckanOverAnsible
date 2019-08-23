@@ -68,59 +68,59 @@
     dest: /var/solr/data/ckan/conf/schema.xml
   register: symnewschema
 
-  - name: Clean managed schema
-    become: yes
-    become_user: solr
-    file:
-      state: absent
-      path: "/var/solr/data/ckan/conf/managed-schema"
+- name: Clean managed schema
+  become: yes
+  become_user: solr
+  file:
+    state: absent
+    path: "/var/solr/data/ckan/conf/managed-schema"
 
-  - name: copy solrconfig
-    become: yes
-    become_user: solr
-    become_method: sudo
-    template:
-      src: ../../templates/default/solr/solrconfig.xml
-      dest: /var/solr/data/ckan/conf/solrconfig.xml
-    register: solrconf
+- name: copy solrconfig
+  become: yes
+  become_user: solr
+  become_method: sudo
+  template:
+    src: ../../templates/default/solr/solrconfig.xml
+    dest: /var/solr/data/ckan/conf/solrconfig.xml
+  register: solrconf
 
-  - name: Initialize CKAN database
-    become_user: root
-    become: yes
-    shell: |
-      . /usr/lib/ckan/default/bin/activate
-      cd /usr/lib/ckan/default/src/ckan
-      paster db init -c /etc/ckan/default/development.ini
-      exit
+- name: Initialize CKAN database
+  become_user: root
+  become: yes
+  shell: |
+    . /usr/lib/ckan/default/bin/activate
+    cd /usr/lib/ckan/default/src/ckan
+    paster db init -c /etc/ckan/default/development.ini
+    exit
 
-  - name: Check if CKAN admin user exists
-    become_user: ckan
-    become: yes
-    shell: |
-      . /usr/lib/ckan/default/bin/activate
-      cd /usr/lib/ckan/default/src/ckan
-      paster --plugin=ckan user list -c /etc/ckan/default/development.ini
-      exit
-    changed_when: False
-    register: ckan_admin_user
+- name: Check if CKAN admin user exists
+  become_user: ckan
+  become: yes
+  shell: |
+    . /usr/lib/ckan/default/bin/activate
+    cd /usr/lib/ckan/default/src/ckan
+    paster --plugin=ckan user list -c /etc/ckan/default/development.ini
+    exit
+  changed_when: False
+  register: ckan_admin_user
 
-  - name: ----- Create admin account -----
-    become_user: ckan
-    become: yes
-    shell: |
-      . /usr/lib/ckan/default/bin/activate
-      cd /usr/lib/ckan/default/src/ckan
-      echo 'y' | paster sysadmin add ckan email=ckan@localhost password=12345678 name=ckan -c /etc/ckan/default/development.ini
-      exit
+- name: ----- Create admin account -----
+  become_user: ckan
+  become: yes
+  shell: |
+    . /usr/lib/ckan/default/bin/activate
+    cd /usr/lib/ckan/default/src/ckan
+    echo 'y' | paster sysadmin add ckan email=ckan@localhost password=12345678 name=ckan -c /etc/ckan/default/development.ini
+    exit
 
-  - name: Ensure Solr is enabled on boot
-    service:
-      name: solr
-      enabled: yes
+- name: Ensure Solr is enabled on boot
+  service:
+    name: solr
+    enabled: yes
 
-  - name: Restart solr
-    become: yes
-    become_user: root
-    service:
-      name: solr
-      state: restarted
+- name: Restart solr
+  become: yes
+  become_user: root
+  service:
+    name: solr
+    state: restarted
