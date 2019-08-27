@@ -14,8 +14,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 
     config.vm.define name do |machine|
-      machine.vm.box = 'debian/stretch64'
-      machine.vm.box_version = "9.8.0"
+      #machine.vm.box = 'debian/stretch64'
+      #machine.vm.box_version = "9.9.0"
+      machine.vm.box = 'debian/buster64'
+      machine.vm.box_version = "10.0"
 
       machine.vm.provider "virtualbox" do |vbox|
         vbox.gui    = true

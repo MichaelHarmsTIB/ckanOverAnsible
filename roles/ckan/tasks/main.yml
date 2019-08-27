@@ -1,7 +1,13 @@
 ---
 
-- name: import prepare ckan ini
-  include: ckan_dev_ini.yml
+- name: copy dev.ini
+  become: yes
+  become_user: root
+  become_method: sudo
+  copy:
+    remote_src: no
+    src: '../../templates/default/ckan/development.ini.j2'
+    dest: /etc/ckan/default/
 
 - name: Create directory for ckan config files
   become: true
@@ -46,7 +52,8 @@
     exit
   args:
     chdir: /usr/lib/ckan
-    creates: /usr/lib/ckan/default/src/ckan/ckan/config/solr/schema.xml
+    #No need cause copy will be used
+    #creates: /usr/lib/ckan/default/src/ckan/ckan/config/solr/schema.xml
 
 - name: Check whether CKAN is installed
   stat: path={{ ckan_install_path }}/src/ckan
@@ -63,7 +70,7 @@
   become_user: root
   become_method: sudo
   template:
-    src: ../../templates/default/ckan/development.ini
+    src: ../../templates/default/ckan/development.ini.j2
     dest: /etc/ckan/default/development.ini
   when: not ansible_check_mode
 
@@ -80,7 +87,7 @@
   become_user: root
   become: yes
   template:
-    src: ../../templates/default/apache2/apache.wsgi
+    src: ../../templates/default/apache2/apache.wsgi.j2
     dest: /etc/ckan/default/apache.wsgi
 
 ## Licenses for dataset upload

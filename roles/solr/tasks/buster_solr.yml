@@ -64,9 +64,10 @@
   become_user: solr
   become_method: sudo
   template:
-    src: ../../templates/default/solr/schema.xml
+    src: ../../templates/default/solr/solr8/schema.xml.j2
     dest: /var/solr/data/ckan/conf/schema.xml
   register: symnewschema
+
 
 - name: Clean managed schema
   become: yes
@@ -74,15 +75,6 @@
   file:
     state: absent
     path: "/var/solr/data/ckan/conf/managed-schema"
-
-- name: copy solrconfig
-  become: yes
-  become_user: solr
-  become_method: sudo
-  template:
-    src: ../../templates/default/solr/solrconfig.xml
-    dest: /var/solr/data/ckan/conf/solrconfig.xml
-  register: solrconf
 
 - name: Initialize CKAN database
   become_user: root
@@ -117,6 +109,21 @@
   service:
     name: solr
     enabled: yes
+
+- name: check if bak schema
+  become: yes
+  become_user: solr
+  become_method: sudo
+  stat:
+    path: /var/solr/data/ckan/conf/schema.xml.bak
+  register: sbak
+
+- name: Rename Schema.xml
+  become: yes
+  become_user: solr
+  become_method: sudo
+  command: mv /var/solr/data/ckan/conf/schema.xml.bak /var/solr/data/ckan/conf/schema.xml
+  when: sbak.stat.exists == True
 
 - name: Restart solr
   become: yes

@@ -97,8 +97,8 @@
   become_user: root
   become_method: sudo
   template:
-    src: ../templates/default/apache2/ckan_default.conf
-    dest: /etc/apache2/sites-available/
+    src: ../templates/default/apache2/ckan_default.conf.j2
+    dest: /etc/apache2/sites-available/ckan_default.conf
   when: ad2c.stat.exists == false
 
 

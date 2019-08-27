@@ -54,7 +54,7 @@ ckan.datastore.read_url = postgresql://datastore_default:ckan123@localhost/datas
 
 ## Site Settings
 
-ckan.site_url = http://ovm05.service.tib.eu
+ckan.site_url = http://{{ ckan_site_host }}
 
 
 ## Authorization Settings
@@ -74,7 +74,7 @@ ckan.auth.create_user_via_api = false
 ckan.site_id = default
 #Set solr url - Important
 solr_url = http://ovm05.service.tib.eu:8983/solr/ckan
-#ckan.root_path = /usr/lib/ckan/default/src/ckan/{{LANG}}/
+#ckan.root_path = /usr/lib/ckan/default/src/ckan/en/
 #ckan.simple_search = 1
 
 
@@ -84,7 +84,7 @@ solr_url = http://ovm05.service.tib.eu:8983/solr/ckan
 #       Add ``pdf_preview`` to enable the resource preview for PDFs
 #		Add ``resource_proxy`` to enable resorce proxying and get around the
 #		same origin policy
-ckan.plugins = stats text_view recline_view recline_grid_view recline_graph_view image_view multilingual_dataset multilingual_group multilingual_tag synchronous_search pdf_view doi fid_move datastore datapusher
+ckan.plugins = stats text_view recline_view recline_grid_view recline_graph_view image_view multilingual_dataset multilingual_group multilingual_tag synchronous_search pdf_view doi datastore datapusher
 ckan.views.default_views = recline_view pdf_view
 
 ## Front-End Settings
@@ -164,7 +164,7 @@ ckan.base_public_folder = public
 # Make sure you have set up the DataStore
 
 ckan.datapusher.formats = csv xls xlsx tsv application/csv application/vnd.ms-excel application/vnd.openxmlformats-officedocument.spreadsheetml.sheet pdf
-ckan.datapusher.url = http://ovm05.service.tib.eu:8800/
+ckan.datapusher.url = http://{{ ckan_site_host }}:8800/
 ckan.datapusher.assume_task_stale_after = 3600
 
 ## Email settings

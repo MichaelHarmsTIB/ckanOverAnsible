@@ -49,12 +49,12 @@ sqlalchemy.url = postgresql://ckan_default:ckan123@localhost/ckan_default
 #sqlalchemy.url = sqlite:///
 #sqlalchemy.url = sqlite:///%(here)s/somedb.db
 
-#ckan.datastore.write_url = postgresql://ckan_default:pass@localhost/datastore_default
-#ckan.datastore.read_url = postgresql://datastore_default:pass@localhost/datastore_default
+ckan.datastore.write_url = postgresql://ckan_default:ckan123@localhost/datastore_default
+ckan.datastore.read_url = postgresql://datastore_default:ckan123@localhost/datastore_default
 
 ## Site Settings
 
-ckan.site_url = http://localhost
+ckan.site_url = http://{{ ckan_site_host }}
 
 
 ## Authorization Settings
@@ -74,7 +74,7 @@ ckan.auth.create_user_via_api = false
 ckan.site_id = default
 #Set solr url - Important
 solr_url = http://localhost:8983/solr/ckan
-
+#ckan.root_path = /usr/lib/ckan/default/src/ckan/en/
 #ckan.simple_search = 1
 
 
@@ -84,8 +84,8 @@ solr_url = http://localhost:8983/solr/ckan
 #       Add ``pdf_preview`` to enable the resource preview for PDFs
 #		Add ``resource_proxy`` to enable resorce proxying and get around the
 #		same origin policy
-ckan.plugins = stats text_view recline_view image_view multilingual_dataset multilingual_group multilingual_tag synchronous_search
-
+ckan.plugins = stats text_view recline_view recline_grid_view recline_graph_view image_view multilingual_dataset multilingual_group multilingual_tag synchronous_search pdf_view doi datastore datapusher
+ckan.views.default_views = recline_view pdf_view
 
 ## Front-End Settings
 ckan.site_title = Fid-Move
@@ -102,7 +102,10 @@ ckan.views.default_views = image_view recline_view text_view
 #package_new_return_url = http://another.frontend/dataset/<NAME>
 #ckan.recaptcha.publickey =
 #ckan.recaptcha.privatekey =
-licenses_group_url = http://bar-opendata-ch.s3.amazonaws.com/licenses_list.json
+
+#### Licenses ######
+licenses_group_url = file:///etc/ckan/default/fid_move_licenses.json
+
 # ckan.template_footer_end =
 
 
@@ -154,7 +157,15 @@ ckan.max_resource_size = 1000
 ckan.max_image_size = 10
 
 
+ckan.base_public_folder = public
 
+# Datapusher settings
+
+# Make sure you have set up the DataStore
+
+ckan.datapusher.formats = csv xls xlsx tsv application/csv application/vnd.ms-excel application/vnd.openxmlformats-officedocument.spreadsheetml.sheet pdf
+ckan.datapusher.url = http://{{ ckan_site_host }}:8800/
+ckan.datapusher.assume_task_stale_after = 3600
 
 ## Email settings
 
@@ -165,6 +176,14 @@ ckan.max_image_size = 10
 #smtp.user = your_username@gmail.com
 #smtp.password = your_password
 #smtp.mail_from =
+# If you use Test-Account the test-mode must be activated
+ckanext.doi.account_name = {{ doi_account_name }}
+ckanext.doi.account_password = {{ doi_account_password }}
+ckanext.doi.prefix = {{ doi_prefix }}
+ckanext.doi.publisher = {{ doi_publisher }}
+ckanext.doi.test_mode = {{ doi_test_mode }}
+#ckanext.doi.site_url =  # Defaults to ckan.site_url if not set
+#ckanext.doi.site_title = # Optional - site title to use in the citation - eg Natural History Museum Data Portal (data.nhm.ac.uk)
 
 ## Logging configuration
 [loggers]
@@ -206,4 +225,3 @@ formatter = generic
 
 [formatter_generic]
 format = %(asctime)s %(levelname)-5.5s [%(name)s] %(message)s
-

@@ -9,3 +9,15 @@ ckan_repository_address: 'git+https://github.com/ckan/ckan.git@ckan-2.8.2#egg=ck
 ckan_install_base_path: '/home/{{ ckan_system_user }}/ckan'
 ckan_install_path: '{{ ckan_install_base_path }}/lib/default'
 ckan_conf_path: '/etc/ckan/default/'
+lang: en
+ckan_site_host: 192.168.10.50 #localhost #http://ovm05.service.tib.eu
+#University internal use
+ini_config: development.ini.j2 #production.ini.j2
+ckan_storage_path: /home/ckan/filestore
+
+#### Datacite Config ######
+doi_account_name: TIB.FID-MOVE
+doi_account_password: mEiW9n
+doi_prefix: 10.7949
+doi_publisher: TIB
+doi_test_mode: true

@@ -64,8 +64,8 @@
   become_user: solr
   become_method: sudo
   template:
-    src: ../../templates/default/solr/schema.xml
-    dest: /var/solr/data/ckan/conf/schema.xml
+    src: ../../templates/default/solr/solr6/schema.xml.j2
+    dest: /var/solr/data/ckan/conf/solr6/schema.xml
   register: symnewschema
 
 - name: Clean managed schema
@@ -80,8 +80,8 @@
   become_user: solr
   become_method: sudo
   template:
-    src: ../../templates/default/solr/solrconfig.xml
-    dest: /var/solr/data/ckan/conf/solrconfig.xml
+    src: ../../templates/default/solr/solr6/solrconfig.xml.j2
+    dest: /var/solr/data/ckan/conf/solr6/solrconfig.xml
   register: solrconf
 
 - name: Initialize CKAN database

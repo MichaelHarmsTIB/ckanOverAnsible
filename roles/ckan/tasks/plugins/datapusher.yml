@@ -59,21 +59,21 @@
   become_user: root
   become: yes
   template:
-    src: ../../../templates/default/apache2/datapusher.conf
+    src: ../../../templates/default/apache2/datapusher.conf.j2
     dest: /etc/apache2/sites-available/datapusher.conf
 
 - name: Ensure WSGI datapusher for CKAN is present
   become_user: root
   become: yes
   template:
-    src: ../../../templates/default/apache2/datapusher.wsgi
+    src: ../../../templates/default/apache2/datapusher.wsgi.j2
     dest: /etc/ckan/datapusher.wsgi
 
 - name: Copy datapusher settings conf
   become_user: root
   become: yes
   template:
-    src: ../../../templates/default/apache2/datapusher_settings.py
+    src: ../../../templates/default/apache2/datapusher_settings.py.j2
     dest: /etc/ckan/datapusher_settings.py
 
 - name: Apache datapusher ports
@@ -88,6 +88,6 @@
 #  become: yes
 #  shell: |
 #    cd /usr/lib/ckan/default/bin/
-#    paster --plugin=ckan datastore set-permissions -c /etc/ckan/default/development.ini | sudo -u postgres psql --set ON_ERROR_STOP=1
+#    paster --plugin=ckan datastore set-permissions -c /etc/ckan/default/development.ini.j2 | sudo -u postgres psql --set ON_ERROR_STOP=1
 #    exit 0
 
