@@ -5,11 +5,11 @@
     path: /usr/lib/ckan/default/src/ckan/ckanext/datacite/
   register: dc
 
-## ToDo Change branch to upgrade for the prefix issue
 - name: install datacite
   become: yes
   become_user: root
   git:
+    version: ckan-upgrade-2.8.0a
     repo: https://github.com/NaturalHistoryMuseum/ckanext-doi.git
     dest: /usr/lib/ckan/default/src/ckan/ckanext/datacite/
 #  when: dc.stat.exists == false
