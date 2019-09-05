@@ -13,5 +13,3 @@
     - solr
     - deploy
 
-
-#when: ansible_distribution == 'CentOS' and ansible_distribution_version == '6.4'
