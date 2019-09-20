@@ -1,0 +1,35 @@
+---
+
+- name: check dcat installation
+  stat:
+    path: /usr/lib/ckan/default/src/ckan/ckanext/dcat/
+  register: dc
+
+- name: install dcat
+  become: yes
+  become_user: root
+  git:
+    repo: https://github.com/ckan/ckanext-dcat.git
+    dest: /usr/lib/ckan/default/src/ckan/ckanext/dcat/
+#  when: dc.stat.exists == false
+
+- name: Give user Ckan rights
+  become_user: root
+  become: yes
+  file:
+    path: /usr/lib/ckan/default/src/ckan/ckanext/dcat/
+    state: directory
+    recurse: yes
+    owner: ckan
+
+#ckanext-dcat/
+- name: python setup dcat
+  become: true
+  become_user: root
+  become_method: sudo
+  shell: |
+    . /usr/lib/ckan/default/bin/activate
+    cd /usr/lib/ckan/default/src/ckan/ckanext/dcat/
+    pip install -r requirements.txt
+    python setup.py develop
+    exit

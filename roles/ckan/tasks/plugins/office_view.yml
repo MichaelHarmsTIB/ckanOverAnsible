@@ -1,0 +1,34 @@
+---
+
+- name: check office installation
+  stat:
+    path: /usr/lib/ckan/default/src/ckan/ckanext/office/
+  register: dc
+
+- name: install office
+  become: yes
+  become_user: root
+  git:
+    repo: https://github.com/jqnatividad/ckanext-officedocs.git
+    dest: /usr/lib/ckan/default/src/ckan/ckanext/office/
+#  when: dc.stat.exists == false
+
+- name: Give user Ckan rights
+  become_user: root
+  become: yes
+  file:
+    path: /usr/lib/ckan/default/src/ckan/ckanext/office/
+    state: directory
+    recurse: yes
+    owner: ckan
+
+#ckanext-office/
+- name: python setup dcat
+  become: true
+  become_user: root
+  become_method: sudo
+  shell: |
+    . /usr/lib/ckan/default/bin/activate
+    cd /usr/lib/ckan/default/src/ckan/ckanext/office/
+    python setup.py install
+    exit

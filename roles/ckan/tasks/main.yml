@@ -115,6 +115,14 @@
   include: plugins/datacite.yml
 
 
+### Notice install harvest before dcat
+#- name: import plugin dcat
+#  include: plugins/harvest.yml
+
+#- name: import plugin dcat
+#  include: plugins/dcat.yml
+
+
 
 
 

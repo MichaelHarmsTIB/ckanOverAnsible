@@ -84,7 +84,7 @@ solr_url = http://localhost:8983/solr/ckan
 #       Add ``pdf_preview`` to enable the resource preview for PDFs
 #		Add ``resource_proxy`` to enable resorce proxying and get around the
 #		same origin policy
-ckan.plugins = stats text_view recline_view recline_grid_view recline_graph_view image_view multilingual_dataset multilingual_group multilingual_tag synchronous_search pdf_view doi datastore datapusher
+ckan.plugins = stats text_view recline_view recline_grid_view recline_graph_view image_view multilingual_dataset multilingual_group multilingual_tag synchronous_search pdf_view doi datastore datapusher {{ dcat }}
 ckan.views.default_views = recline_view pdf_view
 
 ## Front-End Settings
@@ -142,6 +142,18 @@ ckan.storage_path = /home/ckan/filestore
 
 # URL to your Redis instance, including the database to be used.
 ckan.redis.url = redis://localhost:6379/0
+
+### DCAT Config ###
+ckanext.dcat.enable_rdf_endpoints = False
+
+
+### Harverster config ####
+ckan.harvest.mq.type = redis
+#ckan.harvest.mq.hostname (localhost)
+#ckan.harvest.mq.port (6379)
+#ckan.harvest.mq.redis_db (0)
+#ckan.harvest.mq.password (None)
+
 
 ## Activity Streams Settings
 

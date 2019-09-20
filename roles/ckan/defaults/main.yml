@@ -1,5 +1,5 @@
 ---
-### In Production Passwords and User should be change
+### In Production Passwords and User should be change ###
 db_name: ckan_default
 db_user: ckan_default
 db_password: ckan123
@@ -25,10 +25,10 @@ doi_prefix: 10.7949
 doi_publisher: TIB
 doi_test_mode: true
 
-
 #### PlugIns #####
 pdf_view: pdf_view
 doi: doi
 datastore: datastore
 datapusher: datapusher
-dcat: dcat dcat_rdf_harvester dcat_json_harvester dcat_json_interface structured_data
+harvester: #harvest ckan_harvester
+dcat: #dcat dcat_json_harvester dcat_json_interface structured_data #dcat_rdf_harvester
