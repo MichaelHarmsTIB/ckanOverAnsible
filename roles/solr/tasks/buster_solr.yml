@@ -110,24 +110,16 @@
     name: solr
     enabled: yes
 
-- name: check if bak schema
-  become: yes
-  become_user: solr
-  become_method: sudo
-  stat:
-    path: /var/solr/data/ckan/conf/schema.xml.bak
-  register: sbak
-
-- name: Rename Schema.xml
-  become: yes
-  become_user: solr
-  become_method: sudo
-  command: mv /var/solr/data/ckan/conf/schema.xml.bak /var/solr/data/ckan/conf/schema.xml
-  when: sbak.stat.exists == True
-
 - name: Restart solr
   become: yes
   become_user: root
   service:
     name: solr
     state: restarted
+
+### Copy Bug schema.bak to original name
+- name: Rename Schema.xml
+  become: yes
+  become_user: solr
+  become_method: sudo
+  command: mv /var/solr/data/ckan/conf/schema.xml.bak /var/solr/data/ckan/conf/schema.xml

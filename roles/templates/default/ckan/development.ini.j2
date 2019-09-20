@@ -49,8 +49,8 @@ sqlalchemy.url = postgresql://ckan_default:ckan123@localhost/ckan_default
 #sqlalchemy.url = sqlite:///
 #sqlalchemy.url = sqlite:///%(here)s/somedb.db
 
-ckan.datastore.write_url = postgresql://ckan_default:ckan123@localhost/datastore_default
-ckan.datastore.read_url = postgresql://datastore_default:ckan123@localhost/datastore_default
+ckan.datastore.write_url = postgresql://ckan_default:{{ db_password }}@localhost/datastore_default
+ckan.datastore.read_url = postgresql://datastore_default:{{ ckan_datastore_pass }}@localhost/datastore_default
 
 ## Site Settings
 
@@ -74,7 +74,7 @@ ckan.auth.create_user_via_api = false
 ckan.site_id = default
 #Set solr url - Important
 solr_url = http://localhost:8983/solr/ckan
-#ckan.root_path = /usr/lib/ckan/default/src/ckan/en/
+#ckan.root_path = {{ckan_side_path_url}}
 #ckan.simple_search = 1
 
 
@@ -89,9 +89,9 @@ ckan.views.default_views = recline_view pdf_view
 
 ## Front-End Settings
 ckan.site_title = Fid-Move
-ckan.site_logo = /fid-move/base/images/ckan-logo.png
+ckan.site_logo = {{ckan_side_path_url}}/base/images/ckan-logo.png
 ckan.site_description =
-ckan.favicon = /fid-move/images/icons/ckan.ico
+ckan.favicon = {{ckan_side_path_url}}/images/icons/ckan.ico
 ckan.gravatar_default = identicon
 ckan.preview.direct = png jpg gif
 ckan.preview.loadable = html htm rdf+xml owl+xml xml n3 n-triples turtle plain atom csv tsv rss txt json

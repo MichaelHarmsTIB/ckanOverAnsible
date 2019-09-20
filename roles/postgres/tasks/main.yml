@@ -54,5 +54,5 @@
   postgresql_user:
     db: "datastore_default"
     name: "datastore_default"
-    password: "{{ db_password }}"
+    password: "{{ ckan_datastore_pass }}"
     priv: ALL
